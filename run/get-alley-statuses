@@ -1,0 +1,9 @@
+#!/bin/bash
+
+Year=`date +%Y`
+Month=`date +%m`
+Today=`date +%d`
+From="${Year}-${Month}-01T00:00"
+To="${Year}-${Month}-${Today}T23:59"
+
+curl "http://localhost:8080/report/statuses?from=${From}&to=${To}"; echo; echo

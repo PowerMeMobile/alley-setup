@@ -1,0 +1,25 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    # note, the password must be encrypted
+    useradd -m -p $(openssl passwd -1 $ALLEY_PWD) -U -G wheel $ALLEY_USER -s /bin/bash
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to create $ALLEY_USER user
+	    exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

@@ -1,0 +1,71 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    wget --continue http://www.rabbitmq.com/releases/rabbitmq-server/v$RABBITMQ_VER/rabbitmq-server-generic-unix-$RABBITMQ_VER.tar.gz -P /opt
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to download rabbitmq
+	    exit 1
+    fi
+
+    tar -C /opt/ -xzf /opt/rabbitmq-server-generic-unix-$RABBITMQ_VER.tar.gz
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to unpack rabbitmq
+	    exit 1
+    fi
+
+    rm -f /opt/rabbitmq-server-generic-unix-$RABBITMQ_VER.tar.gz
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to rm rabbitmq tar
+	    exit 1
+    fi
+
+    # TODO: on upgrade the link may already exist
+    ln -s /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to ln rabbitmq
+	    exit 1
+    fi
+
+    mkdir -p $VAR_DIR/rabbitmq/log $VAR_DIR/rabbitmq/mnesia
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to mkdir var/rabbitmq
+	    exit 1
+    fi
+
+    # setup file system permissions
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $VAR_DIR/rabbitmq
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to chown for rabbitmq
+	    exit 1
+    fi
+
+    # use custom config with non-standard paths
+    cp $SCRIPT_DIR/../conf/rabbitmq-env.conf /opt/rabbitmq/etc/rabbitmq/
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to copy rabbitmq config
+	    exit 1
+    fi
+
+    echo -e '\nexport PATH=/opt/rabbitmq/sbin:$PATH' >> /etc/profile
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to add rabbitmq path to /etc/profile
+	    exit 1
+    fi
+
+    export PATH=/opt/rabbitmq/sbin/:$PATH
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

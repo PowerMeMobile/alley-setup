@@ -1,0 +1,74 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    sed -e "s:{{DB_DIR}}:$DB_DIR:;s:{{VAR_DIR}}:$VAR_DIR:" $SCRIPT_DIR/../run/autostart-alley.template > /opt/bin/start-alley
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to copy start-alley to /opt/bin"
+        exit 1
+    fi
+
+    chmod +x /opt/bin/start-alley
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to chmod +x start-alley"
+        exit 1
+    fi
+
+    if [[ -f /etc/rc.local ]]; then
+        cat >> /etc/rc.local << EOF
+su $ALLEY_USER -c 'bash -c "source /etc/profile; /opt/bin/start-alley &> /home/$ALLEY_USER/start-alley.log"'
+EOF
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to add start rules to rc.local"
+            exit 1
+        fi
+        cat << EOF
+WARNING!
+Please review /etc/rc.local for inconsistencies
+EOF
+    elif which systemctl &> /dev/null; then
+        cat >> /etc/rc.local << EOF
+#!/bin/bash
+
+su $ALLEY_USER -c 'bash -c "source /etc/profile; /opt/bin/start-alley &> /home/$ALLEY_USER/start-alley.log"'
+EOF
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to add start rules to rc.local"
+            exit 1
+        fi
+
+        chmod +x /etc/rc.local
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to chmod +x /etc/rc.local"
+            exit 1
+        fi
+
+        cat << EOF
+WARNING!
+Your operation system uses the systemd init system.
+
+Enable autostart by manually copying
+# cp $(readlink -m $SCRIPT_DIR/../conf/rc-local.service) /etc/systemd/system/rc-local.service
+and then running
+# systemctl enable rc-local.service
+
+EOF
+    else
+        echo "Neither /etc/rc.local nor systemd"
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

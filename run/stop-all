@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+if [[ "$(id -un)" == "root" ]]; then
+	echo "Must not be root"
+	exit 1
+fi
+
+/opt/just/bin/just stop
+/opt/kelly/bin/kelly stop
+/opt/funnel/bin/funnel stop
+
+killall mongod
+
+rabbitmqctl stop
+
+kill `ps x | grep [s]mppsim | awk '{ print $1 }'`

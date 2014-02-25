@@ -1,0 +1,24 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/SMPPSim.tar.gz
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to unpack smppsim
+	    exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

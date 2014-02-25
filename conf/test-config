@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# SMPPSim
+OUTPUT_SMPP_HOST=127.0.0.1
+OUTPUT_SMPP_PORT=8001
+
+###
+# Be aware:
+# 1. Customer's `priority' and `rps' settings are disabled, due to http://extranet.powermemobile.com/issues/17465
+# 2. Customer's `default_validity' in time format, described in SMPP specification v3.4
+###
+
+# To test PUT requests:
+# curl --request PUT 'Url' --data 'Body'
+# httpc:request(put, {Url, [], "application/x-www-form-urlencoded", Body}, [], []).
+
+#
+# Gateways
+#
+echo -n 'id=7dc235d0-c938-4b66-8f8c-c9037c7eace7&name=SMPPSim&rps=10000' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways; echo
+
+# set gateway's settings
+#echo -n 'id=log_smpp_pdus&value=true' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/settings; echo
+
+
+#
+# Connections (SMPPSim)
+#
+echo -n "id=0&addr=$OUTPUT_SMPP_HOST&port=$OUTPUT_SMPP_PORT&type=1&sys_id=smppclient1&pass=password&sys_type=SMPP&addr_ton=1&addr_npi=1&addr_range=" | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections; echo
+
+echo -n "id=1&addr=$OUTPUT_SMPP_HOST&port=$OUTPUT_SMPP_PORT&type=2&sys_id=smppclient2&pass=password&sys_type=SMPP&addr_ton=1&addr_npi=1&addr_range=" | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections; echo
+
+#
+# Providers
+#
+echo -n 'id=0a89542c-5270-11e1-bf27-001d0947ec73&name=test_provider&gateway=7dc235d0-c938-4b66-8f8c-c9037c7eace7&bulk_gateway=7dc235d0-c938-4b66-8f8c-c9037c7eace7&receipts_supported=true' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/providers; echo
+
+#
+# Networks
+#
+echo -n 'id=920a009a-5270-11e1-b961-001d0947ec73&name=test_network_1&country_code=375&numbers_len=12&prefixes=29;33;44&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/networks; echo
+
+echo -n 'id=3b25cd8e-5eca-11e1-bf77-00269e42f7a5&name=test_network_2&country_code=375&numbers_len=12&prefixes=25&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/networks; echo
+
+#
+# Customers
+#
+
+#
+# smppload
+
+# postpaid customer
+echo -n 'id=493b3678-9dc8-11e2-8cce-00269e42f7a5&system_id=&name=smppload-postpaid&originators=375296660002,1,1&networks=920a009a-5270-11e1-b961-001d0947ec73;3b25cd8e-5eca-11e1-bf77-00269e42f7a5&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_originator=375296660002,1,1&billing_type=postpaid&state=1' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers; echo
+
+# users
+echo -n 'id=user&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo
+echo -n 'id=user2&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo
+echo -n 'id=user3&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo

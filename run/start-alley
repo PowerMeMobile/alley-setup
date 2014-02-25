@@ -1,0 +1,61 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+if [[ "$(id -un)" == "root" ]]; then
+	echo "Must not be root"
+	exit 1
+fi
+
+source $SCRIPT_DIR/../conf/setup.conf
+
+echo -e "\nStarting Funnel..."
+/opt/funnel/bin/funnel start
+sleep 5
+F=`/opt/funnel/bin/funnel ping`
+if [[ $F != 'pong' ]]; then
+    echo $F
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
+
+echo -e "\nStarting Kelly..."
+/opt/kelly/bin/kelly start
+sleep 5
+K=`/opt/kelly/bin/kelly ping`
+if [[ $K != 'pong' ]]; then
+    echo $K
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
+
+echo -e "\nStarting Just..."
+/opt/just/bin/just start
+sleep 15
+J=`/opt/just/bin/just ping`
+if [[ $J != 'pong' ]]; then
+    echo $J
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
+
+echo -e "\nStarting SOAP Srv..."
+/opt/soap_srv/bin/soap_srv start
+sleep 5
+S=`/opt/soap_srv/bin/soap_srv ping`
+if [[ $S != 'pong' ]]; then
+    echo $S
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
+
+echo "Alley started"

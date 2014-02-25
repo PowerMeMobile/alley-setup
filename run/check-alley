@@ -1,0 +1,3 @@
+#!/bin/bash
+
+smppload -uuser -ppassword -c10 -s375296660002 -d375291112233 -v -D | sed -r "s/INFO:  (.*)/\1/"

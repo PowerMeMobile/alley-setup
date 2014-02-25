@@ -1,0 +1,54 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    pacman -Syu --noconfirm \
+	    base-devel  \
+	    openssl \
+	    ncurses \
+	    unixodbc \
+	    jdk7-openjdk \
+	    fop \
+	    libxslt \
+	    git \
+	    screen \
+	    net-snmp \
+	    htop \
+	    sysstat \
+	    iotop \
+	    perl-libwww \
+	    wget \
+	    curl \
+	    sudo
+
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to install deps
+	    exit 1
+    fi
+
+    wget --continue https://aur.archlinux.org/packages/to/tokyocabinet/tokyocabinet.tar.gz
+    tar -xzf tokyocabinet.tar.gz
+    pushd tokyocabinet
+    makepkg -s --asroot
+    pacman -U --noconfirm tokyocabinet-1.4.48-1-x86_64.pkg.tar.xz
+    ret=$?
+    popd
+    rm -rf tokyocabinet*
+
+    if [[ $ret -ne 0 ]]; then
+	    echo Failed to install tokyocabinet
+	    exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

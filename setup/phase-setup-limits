@@ -1,0 +1,28 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    echo -e '\n*	hard		nofile	64000' >> /etc/security/limits.conf
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to add nofile limits
+	    exit 1
+    fi
+
+    echo -e '\n*	hard		nproc	32000' >> /etc/security/limits.conf
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to nproc limits
+	    exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

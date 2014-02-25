@@ -1,0 +1,63 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    # check if EPEL is already installed or this is fedora
+    rpm -q epel-release >/dev/null 2>&1 || rpm -q fedora-release >/dev/null 2>&1
+    if [[ $? -ne 0 ]]; then
+        # install EPEL
+	    yum -y install http://mirror.datacenter.by/pub/fedoraproject.org/epel/6/x86_64/epel-release-6-8.noarch.rpm
+	    if [[ $? -ne 0 ]]; then
+	        echo Failed to setup EPEL repository
+	        exit 1
+	    fi
+    else
+	    echo EPEL is already installed
+    fi
+
+    yum update -y
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to update
+	    exit 1
+    fi
+
+    yum install -y \
+	    gcc \
+	    gcc-c++ \
+	    openssl-devel \
+	    ncurses-devel \
+	    unixODBC-devel \
+	    java-1.7.0-openjdk-devel \
+	    fop \
+	    libxslt \
+	    git \
+	    screen \
+	    libuuid-devel \
+	    tokyocabinet-devel \
+	    net-snmp \
+	    net-snmp-utils \
+	    net-snmp-devel \
+	    htop \
+	    sysstat \
+	    iotop \
+	    perl-libwww-perl \
+	    wget \
+	    curl
+
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to install deps
+	    exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

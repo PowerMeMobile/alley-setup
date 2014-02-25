@@ -1,0 +1,33 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    # create opt
+    mkdir -p /opt/bin
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to create opt/bin dir
+	    exit 1
+    fi
+
+    echo -e '\nexport PATH=/opt/bin:$PATH' >> /etc/profile
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to add /opt/bin path to profile
+	    exit 1
+    fi
+
+    export PATH=/opt/bin/:$PATH
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

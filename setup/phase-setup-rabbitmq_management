@@ -1,0 +1,45 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    # enable rabbitmq_management plugin
+    /opt/rabbitmq/sbin/rabbitmq-plugins enable rabbitmq_management
+
+    # download rabbitmqadmin utility
+    /opt/rabbitmq/sbin/rabbitmq-server -detached
+
+    sleep 10
+
+    wget http://localhost:15672/cli/rabbitmqadmin -O /opt/rabbitmq/sbin/rabbitmqadmin
+    # the path doesn't work :(
+    #wget http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v$RABBITMQ_VER/bin/rabbitmqadmin -O /opt/rabbitmq/sbin/rabbitmqadmin
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to download rabbitmqadmin
+	    exit 1
+    fi
+
+    /opt/rabbitmq/sbin/rabbitmqctl stop
+
+    # we were under root, change permissions back.
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $VAR_DIR/rabbitmq
+    if [[ $? -ne 0 ]]; then
+	    echo Failed to chown for rabbitmq
+	    exit 1
+    fi
+
+    chmod +x /opt/rabbitmq/sbin/rabbitmqadmin
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
