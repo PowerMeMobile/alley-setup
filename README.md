@@ -8,7 +8,7 @@ The setup creates a new user and sets up autostart on reboot.
 Adjust setup/build configuration options in conf/setup.conf before going further.
 
 <pre>
-$ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;\
+$ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 </pre>
 
 <pre>
