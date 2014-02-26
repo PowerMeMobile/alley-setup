@@ -1,18 +1,35 @@
 # OpenAlley setup
 
+<pre>
 $ cd /opt/alley-setup
+</pre>
 
 The setup creates a new user and sets up autostart on reboot.
 Adjust setup/build configuration options in conf/setup.conf before going further.
 
-$ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
+<pre>
+$ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;\
+</pre>
+
+<pre>
 $ su - alley
+</pre>
+
+<pre>
 $ cd /opt/alley-setup
+</pre>
+
+<pre>
 $ run/start-all
+</pre>
+
+<pre>
 $ conf/test-config
+</pre>
+
+<pre>
 $ run/check-alley
 Connected to 127.0.0.1:2775
-<pre>
 Bound to Funnel
 Stats:
    Send success:     10
@@ -23,5 +40,8 @@ Stats:
    Avg Rps:          2 mps
 Unbound
 </pre>
+
+<pre>
 $ run/get-alley-statuses
-<pre>{"delivered":10}</pre>
+{"delivered":10}
+</pre>
