@@ -1,0 +1,19 @@
+screen -t "htop" bash -c "echo htop; echo; exec bash"
+
+screen -t "rabbitmq" bash -c "echo rabbitmq-server -detached; echo rabbitmqctl status \| stop; echo -e 'watch -n1 \x27rabbitmqctl list_queues name messages messages_ready messages_unacknowledged -q | column -t | sort\x27'; echo; exec bash"
+
+screen -t "mongodb" bash -c "echo ulimit -n 64000 -u 32000; echo mongod --port 27017 --dbpath /mnt/db/data/ --logpath /mnt/var/mongodb/db/log/mongodb.log --logappend --fork; echo mongo; echo; exec bash"
+
+screen -t "funnel" bash -c "cd /opt/funnel; echo ./bin/funnel start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
+screen -t "kelly" bash -c "cd /opt/kelly; echo ./bin/kelly start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
+screen -t "soap" bash -c "cd /opt/soap_srv; echo ./bin/soap_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
+screen -t "just" bash -c "cd /opt/just; echo ./bin/just start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
+screen -t "smppsim" bash -c "cd /opt/SMPPSim; echo ./startsmppsim.sh; echo; exec bash"
+
+screen
+
+select 0
