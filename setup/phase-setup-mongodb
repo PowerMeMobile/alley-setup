@@ -11,30 +11,38 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    wget --continue http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-$MONGODB_VER.tgz -P /opt
+    pushd /opt
+
+    curl -O -C - http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
 	    echo Failed to download mongodb
+        popd
 	    exit 1
     fi
 
-    tar -C /opt -xzf /opt/mongodb-linux-x86_64-$MONGODB_VER.tgz
+    tar -xzf mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
 	    echo Failed to unpack mongodb
+        popd
 	    exit 1
     fi
 
-    rm -f /opt/mongodb-linux-x86_64-$MONGODB_VER.tgz
+    rm -f mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
 	    echo Failed to rm mongodb tgz
+        popd
 	    exit 1
     fi
 
     # TODO: on upgrade the link may already exist
-    ln -s /opt/mongodb-linux-x86_64-$MONGODB_VER /opt/mongodb
+    ln -s mongodb-linux-x86_64-$MONGODB_VER mongodb
     if [[ $? -ne 0 ]]; then
 	    echo Failed to ln mongodb
+        popd
 	    exit 1
     fi
+
+    popd
 
     #
     # create dirs
