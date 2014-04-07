@@ -14,34 +14,34 @@ if [[ $? -eq 1 ]]; then
     SNMP_DIR=/home/$ALLEY_USER/.snmp/
     mkdir -p $SNMP_DIR/mibs
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir $SNMP_DIR
-	    exit 1
+        echo Failed to mkdir $SNMP_DIR
+        exit 1
     fi
 
     cp /opt/otp/lib/erlang/lib/snmp-*/mibs/*.mib $SNMP_DIR/mibs
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy erlang mibs
-	    exit 1
+        echo Failed to copy erlang mibs
+        exit 1
     fi
 
     cp /opt/funnel/mibs/*.mib $SNMP_DIR/mibs
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy funnel mibs
-	    exit 1
+        echo Failed to copy funnel mibs
+        exit 1
     fi
 
     cp /opt/just/mibs/*.mib $SNMP_DIR/mibs
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy just mibs
-	    exit 1
+        echo Failed to copy just mibs
+        exit 1
     fi
 
     echo "mibs JUST-MIB:FUNNEL-MIB" > $SNMP_DIR/snmp.conf
 
     chown $ALLEY_USER:$ALLEY_USER -R $SNMP_DIR
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for mibs
-	    exit 1
+        echo Failed to chown for mibs
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

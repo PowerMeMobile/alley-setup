@@ -11,33 +11,33 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     apt-get update -y
     if [[ $? -ne 0 ]]; then
-	    echo Failed to update
-	    exit 1
+        echo Failed to update
+        exit 1
     fi
 
     apt-get install -y \
-	    build-essential \
-	    libssl-dev \
-	    libncurses5-dev \
-	    unixodbc-dev \
-	    default-jdk \
-	    fop \
-	    xsltproc \
-	    git-core \
-	    screen \
-	    uuid-dev \
-	    libtokyocabinet-dev \
-	    libwww-perl \
-	    snmp \
-	    htop \
-	    sysstat \
-	    iotop \
-	    wget \
-	    curl
+        build-essential \
+        libssl-dev \
+        libncurses5-dev \
+        unixodbc-dev \
+        default-jdk \
+        fop \
+        xsltproc \
+        git-core \
+        screen \
+        uuid-dev \
+        libtokyocabinet-dev \
+        libwww-perl \
+        snmp \
+        htop \
+        sysstat \
+        iotop \
+        wget \
+        curl
 
     if [[ $? -ne 0 ]]; then
-	    echo Failed to install deps
-	    exit 1
+        echo Failed to install deps
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

@@ -14,8 +14,8 @@ if [[ $? -eq 1 ]]; then
     if [[ $BUILD_JUST == true ]]; then
         git clone https://github.com/PowerMeMobile/just_mini_rel.git $TMP_DIR/just_mini
         if [[ $? -ne 0 ]]; then
-	        echo Failed to clone just
-	        exit 1
+            echo Failed to clone just
+            exit 1
         fi
 
         pushd $TMP_DIR/just_mini
@@ -61,65 +61,65 @@ if [[ $? -eq 1 ]]; then
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/just_mini-$JUST_VER-$DISTRO-x86_64.tar.gz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack just
-	    exit 1
+        echo Failed to unpack just
+        exit 1
     fi
 
     # TODO: on upgrade the link may already exist
     ln -s /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln just
-	    exit 1
+        echo Failed to ln just
+        exit 1
     fi
 
     # create Just dirs
     mkdir -p $VAR_DIR/just
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir just
-	    exit 1
+        echo Failed to mkdir just
+        exit 1
     fi
 
     cp -r /opt/just/data $VAR_DIR/just
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy just data
-	    exit 1
+        echo Failed to copy just data
+        exit 1
     fi
 
     cp -r /opt/just/log $VAR_DIR/just
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy just log
-	    exit 1
+        echo Failed to copy just log
+        exit 1
     fi
 
     rm -rf /opt/just/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm just data
-	    exit 1
+        echo Failed to rm just data
+        exit 1
     fi
 
     rm -rf /opt/just/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm just log
-	    exit 1
+        echo Failed to rm just log
+        exit 1
     fi
 
     ln -s $VAR_DIR/just/data /opt/just/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln just data
-	    exit 1
+        echo Failed to ln just data
+        exit 1
     fi
 
     ln -s $VAR_DIR/just/log /opt/just/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln just log
-	    exit 1
+        echo Failed to ln just log
+        exit 1
     fi
 
     # setup file system permissions
     chown $ALLEY_USER:$ALLEY_USER -R /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just $VAR_DIR/just
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for opt/just var/just
-	    exit 1
+        echo Failed to chown for opt/just var/just
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

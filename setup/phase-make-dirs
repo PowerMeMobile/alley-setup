@@ -14,14 +14,14 @@ if [[ $? -eq 1 ]]; then
     # create opt
     mkdir -p /opt/bin
     if [[ $? -ne 0 ]]; then
-	    echo Failed to create opt/bin dir
-	    exit 1
+        echo Failed to create opt/bin dir
+        exit 1
     fi
 
     echo -e '\nexport PATH=/opt/bin:$PATH' >> /etc/profile
     if [[ $? -ne 0 ]]; then
-	    echo Failed to add /opt/bin path to profile
-	    exit 1
+        echo Failed to add /opt/bin path to profile
+        exit 1
     fi
 
     export PATH=/opt/bin/:$PATH

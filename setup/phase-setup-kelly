@@ -14,8 +14,8 @@ if [[ $? -eq 1 ]]; then
     if [[ $BUILD_KELLY == true ]]; then
         git clone https://github.com/PowerMeMobile/kelly.git $TMP_DIR/kelly
         if [[ $? -ne 0 ]]; then
-	        echo Failed to clone kelly
-	        exit 1
+            echo Failed to clone kelly
+            exit 1
         fi
 
         pushd $TMP_DIR/kelly
@@ -61,65 +61,65 @@ if [[ $? -eq 1 ]]; then
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack kelly
-	    exit 1
+        echo Failed to unpack kelly
+        exit 1
     fi
 
     # TODO: on upgrade the link may already exist
     ln -s /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln kelly
-	    exit 1
+        echo Failed to ln kelly
+        exit 1
     fi
 
     # create Kelly dirs
     mkdir -p $VAR_DIR/kelly
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir kelly
-	    exit 1
+        echo Failed to mkdir kelly
+        exit 1
     fi
 
     cp -r /opt/kelly/data $VAR_DIR/kelly
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy kelly data
-	    exit 1
+        echo Failed to copy kelly data
+        exit 1
     fi
 
     cp -r /opt/kelly/log $VAR_DIR/kelly
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy kelly log
-	    exit 1
+        echo Failed to copy kelly log
+        exit 1
     fi
 
     rm -rf /opt/kelly/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm kelly data
-	    exit 1
+        echo Failed to rm kelly data
+        exit 1
     fi
 
     rm -rf /opt/kelly/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm kelly log
-	    exit 1
+        echo Failed to rm kelly log
+        exit 1
     fi
 
     ln -s $VAR_DIR/kelly/data /opt/kelly/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln kelly data
-	    exit 1
+        echo Failed to ln kelly data
+        exit 1
     fi
 
     ln -s $VAR_DIR/kelly/log /opt/kelly/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln kelly log
-	    exit 1
+        echo Failed to ln kelly log
+        exit 1
     fi
 
     # setup file system permissions
     chown $ALLEY_USER:$ALLEY_USER -R /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly $VAR_DIR/kelly
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for opt/kelly var/kelly
-	    exit 1
+        echo Failed to chown for opt/kelly var/kelly
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

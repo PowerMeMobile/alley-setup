@@ -15,31 +15,31 @@ if [[ $? -eq 1 ]]; then
 
     curl -O -C - http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to download mongodb
+        echo Failed to download mongodb
         popd
-	    exit 1
+        exit 1
     fi
 
     tar -xzf mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack mongodb
+        echo Failed to unpack mongodb
         popd
-	    exit 1
+        exit 1
     fi
 
     rm -f mongodb-linux-x86_64-$MONGODB_VER.tgz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm mongodb tgz
+        echo Failed to rm mongodb tgz
         popd
-	    exit 1
+        exit 1
     fi
 
     # TODO: on upgrade the link may already exist
     ln -s mongodb-linux-x86_64-$MONGODB_VER mongodb
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln mongodb
+        echo Failed to ln mongodb
         popd
-	    exit 1
+        exit 1
     fi
 
     popd
@@ -49,26 +49,26 @@ if [[ $? -eq 1 ]]; then
     #
     mkdir -p $DB_DIR/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir db/data
-	    exit 1
+        echo Failed to mkdir db/data
+        exit 1
     fi
 
     mkdir -p $VAR_DIR/mongodb/db/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir var/mongodb
-	    exit 1
+        echo Failed to mkdir var/mongodb
+        exit 1
     fi
 
     chown $ALLEY_USER:$ALLEY_USER -R /opt/mongodb-linux-x86_64-$MONGODB_VER /opt/mongodb $DB_DIR $VAR_DIR/mongodb
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for dbs
-	    exit 1
+        echo Failed to chown for dbs
+        exit 1
     fi
 
     echo -e '\nexport PATH=/opt/mongodb/bin:$PATH' >> /etc/profile
     if [[ $? -ne 0 ]]; then
-	    echo Failed to add mongodb path to profile
-	    exit 1
+        echo Failed to add mongodb path to profile
+        exit 1
     fi
 
     export PATH=/opt/mongodb/bin/:$PATH

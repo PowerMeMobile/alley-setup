@@ -14,8 +14,8 @@ if [[ $? -eq 1 ]]; then
     if [[ $BUILD_FUNNEL == true ]]; then
         git clone https://github.com/PowerMeMobile/funnel_mini_rel.git $TMP_DIR/funnel_mini
         if [[ $? -ne 0 ]]; then
-	        echo Failed to clone funnel
-	        exit 1
+            echo Failed to clone funnel
+            exit 1
         fi
 
         pushd $TMP_DIR/funnel_mini
@@ -61,65 +61,65 @@ if [[ $? -eq 1 ]]; then
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64.tar.gz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack funnel
-	    exit 1
+        echo Failed to unpack funnel
+        exit 1
     fi
 
     # TODO: on upgrade the link may already exist
     ln -s /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln funnel
-	    exit 1
+        echo Failed to ln funnel
+        exit 1
     fi
 
     # create Funnel dirs
     mkdir -p $VAR_DIR/funnel
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir funnel
-	    exit 1
+        echo Failed to mkdir funnel
+        exit 1
     fi
 
     cp -r /opt/funnel/data $VAR_DIR/funnel
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy funnel data
-	    exit 1
+        echo Failed to copy funnel data
+        exit 1
     fi
 
     cp -r /opt/funnel/log $VAR_DIR/funnel
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy funnel log
-	    exit 1
+        echo Failed to copy funnel log
+        exit 1
     fi
 
     rm -rf /opt/funnel/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm funnel data
-	    exit 1
+        echo Failed to rm funnel data
+        exit 1
     fi
 
     rm -rf /opt/funnel/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm funnel log
-	    exit 1
+        echo Failed to rm funnel log
+        exit 1
     fi
 
     ln -s $VAR_DIR/funnel/data /opt/funnel/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln funnel data
-	    exit 1
+        echo Failed to ln funnel data
+        exit 1
     fi
 
     ln -s $VAR_DIR/funnel/log /opt/funnel/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln funnel log
-	    exit 1
+        echo Failed to ln funnel log
+        exit 1
     fi
 
     # setup file system permissions
     chown $ALLEY_USER:$ALLEY_USER -R /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel $VAR_DIR/funnel
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for opt/funnel var/funnel
-	    exit 1
+        echo Failed to chown for opt/funnel var/funnel
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

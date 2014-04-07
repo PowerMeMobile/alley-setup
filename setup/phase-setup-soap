@@ -14,8 +14,8 @@ if [[ $? -eq 1 ]]; then
     if [[ $BUILD_SOAP == true ]]; then
         git clone https://github.com/PowerMeMobile/soap_srv.git $TMP_DIR/soap_srv
         if [[ $? -ne 0 ]]; then
-	        echo Failed to clone soap_srv
-	        exit 1
+            echo Failed to clone soap_srv
+            exit 1
         fi
 
         pushd $TMP_DIR/soap_srv
@@ -61,65 +61,65 @@ if [[ $? -eq 1 ]]; then
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/soap_srv-$SOAP_VER-$DISTRO-x86_64.tar.gz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack soap_srv
-	    exit 1
+        echo Failed to unpack soap_srv
+        exit 1
     fi
 
     # TODO: on upgrade the link may already exist
     ln -s /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln soap_srv
-	    exit 1
+        echo Failed to ln soap_srv
+        exit 1
     fi
 
     # create Soap_Srv dirs
     mkdir -p $VAR_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
-	    echo Failed to mkdir soap_srv
-	    exit 1
+        echo Failed to mkdir soap_srv
+        exit 1
     fi
 
     cp -r /opt/soap_srv/data $VAR_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy soap_srv data
-	    exit 1
+        echo Failed to copy soap_srv data
+        exit 1
     fi
 
     cp -r /opt/soap_srv/log $VAR_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
-	    echo Failed to copy soap_srv log
-	    exit 1
+        echo Failed to copy soap_srv log
+        exit 1
     fi
 
     rm -rf /opt/soap_srv/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm soap_srv data
-	    exit 1
+        echo Failed to rm soap_srv data
+        exit 1
     fi
 
     rm -rf /opt/soap_srv/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to rm soap_srv log
-	    exit 1
+        echo Failed to rm soap_srv log
+        exit 1
     fi
 
     ln -s $VAR_DIR/soap_srv/data /opt/soap_srv/data
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln soap_srv data
-	    exit 1
+        echo Failed to ln soap_srv data
+        exit 1
     fi
 
     ln -s $VAR_DIR/soap_srv/log /opt/soap_srv/log
     if [[ $? -ne 0 ]]; then
-	    echo Failed to ln soap_srv log
-	    exit 1
+        echo Failed to ln soap_srv log
+        exit 1
     fi
 
     # setup file system permissions
     chown $ALLEY_USER:$ALLEY_USER -R /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv $VAR_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
-	    echo Failed to chown for opt/soap_srv var/soap_srv
-	    exit 1
+        echo Failed to chown for opt/soap_srv var/soap_srv
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

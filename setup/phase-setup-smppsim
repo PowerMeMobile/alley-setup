@@ -13,8 +13,8 @@ if [[ $? -eq 1 ]]; then
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/SMPPSim.tar.gz
     if [[ $? -ne 0 ]]; then
-	    echo Failed to unpack smppsim
-	    exit 1
+        echo Failed to unpack smppsim
+        exit 1
     fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log

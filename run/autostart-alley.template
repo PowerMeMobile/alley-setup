@@ -8,8 +8,8 @@ echo "# $SCRIPT_NAME"
 echo "#"
 
 if [[ "$(id -un)" == "root" ]]; then
-	echo "Must not be root"
-	exit 1
+    echo "Must not be root"
+    exit 1
 fi
 
 date
