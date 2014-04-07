@@ -11,23 +11,25 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    # enable rabbitmq_management plugin
-    /opt/rabbitmq/sbin/rabbitmq-plugins enable rabbitmq_management
+    pushd /opt/rabbitmq/sbin
 
-    # download rabbitmqadmin utility
-    /opt/rabbitmq/sbin/rabbitmq-server -detached
+    ./rabbitmq-plugins enable rabbitmq_management
 
+    ./rabbitmq-server -detached
     sleep 10
 
-    wget http://localhost:15672/cli/rabbitmqadmin -O /opt/rabbitmq/sbin/rabbitmqadmin
-    # the path doesn't work :(
-    #wget http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v$RABBITMQ_VER/bin/rabbitmqadmin -O /opt/rabbitmq/sbin/rabbitmqadmin
+    curl -O http://localhost:15672/cli/rabbitmqadmin 2> /dev/null
     if [[ $? -ne 0 ]]; then
         echo Failed to download rabbitmqadmin
+        popd
         exit 1
     fi
 
-    /opt/rabbitmq/sbin/rabbitmqctl stop
+    ./rabbitmqctl stop
+
+    chmod +x ./rabbitmqadmin
+
+    popd
 
     # we were under root, change permissions back.
     chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $VAR_DIR/rabbitmq
@@ -35,8 +37,6 @@ if [[ $? -eq 1 ]]; then
         echo Failed to chown for rabbitmq
         exit 1
     fi
-
-    chmod +x /opt/rabbitmq/sbin/rabbitmqadmin
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"
