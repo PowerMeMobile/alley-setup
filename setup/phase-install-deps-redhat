@@ -47,7 +47,6 @@ if [[ $? -eq 1 ]]; then
         htop \
         sysstat \
         iotop \
-        perl-libwww-perl \
         wget \
         curl
 
