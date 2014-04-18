@@ -29,7 +29,7 @@ echo "SUCCESS"
 
 echo -e "\nStarting RabbitMQ..."
 rabbitmq-server -detached
-sleep 10
+sleep 30
 rabbitmqctl status
 if [ $? != 0 ]; then
     echo "FAILED"
