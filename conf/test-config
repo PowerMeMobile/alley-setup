@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# SMPPSim
-OUTPUT_SMPP_HOST=127.0.0.1
-OUTPUT_SMPP_PORT=8001
+PORT="8080"
+HOST="127.0.0.1"
 
 ###
 # Be aware:
@@ -10,49 +9,100 @@ OUTPUT_SMPP_PORT=8001
 # 2. Customer's `default_validity' in time format, described in SMPP specification v3.4
 ###
 
-# To test PUT requests:
-# curl --request PUT 'Url' --data 'Body'
-# httpc:request(put, {Url, [], "application/x-www-form-urlencoded", Body}, [], []).
+post() {
+    TARGET=$1
+    BODY=$2
+    echo -n "Creating $TARGET..."
+    CODE=`curl -s -D - -X "POST" http://$HOST:$PORT/$TARGET -d $BODY -l -o /dev/null | grep -i http | awk '{ print $2 }'`
+    if [ "$CODE" != "201" ]; then
+        echo -e "\nUnexpected return code [$TARGET:$BODY:$CODE]"
+        exit 1
+    fi
+    echo "OK"
+}
 
 #
 # Gateways
 #
-echo -n 'id=7dc235d0-c938-4b66-8f8c-c9037c7eace7&name=SMPPSim&rps=10000' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways; echo
+
+post gateways "id=7dc235d0-c938-4b66-8f8c-c9037c7eace7&name=SMPPSim&rps=10000"
 
 # set gateway's settings
-#echo -n 'id=log_smpp_pdus&value=true' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/settings; echo
-
+#post "gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/settings" "id=log_smpp_pdus&value=true"
 
 #
 # Connections (SMPPSim)
 #
-echo -n "id=0&addr=$OUTPUT_SMPP_HOST&port=$OUTPUT_SMPP_PORT&type=1&sys_id=smppclient1&pass=password&sys_type=SMPP&addr_ton=1&addr_npi=1&addr_range=" | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections; echo
+post "gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections" "id=0&host=127.0.0.1&port=8001&bind_type=transmitter&system_id=smppclient1&password=password&system_type=SMPP&addr_ton=1&addr_npi=1&addr_range="
 
-echo -n "id=1&addr=$OUTPUT_SMPP_HOST&port=$OUTPUT_SMPP_PORT&type=2&sys_id=smppclient2&pass=password&sys_type=SMPP&addr_ton=1&addr_npi=1&addr_range=" | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections; echo
+post "gateways/7dc235d0-c938-4b66-8f8c-c9037c7eace7/connections" "id=1&host=127.0.0.1&port=8001&bind_type=receiver&system_id=smppclient2&password=password&system_type=SMPP&addr_ton=1&addr_npi=1&addr_range="
 
 #
 # Providers
 #
-echo -n 'id=0a89542c-5270-11e1-bf27-001d0947ec73&name=test_provider&gateway=7dc235d0-c938-4b66-8f8c-c9037c7eace7&bulk_gateway=7dc235d0-c938-4b66-8f8c-c9037c7eace7&receipts_supported=true' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/providers; echo
+post "providers" 'id=0a89542c-5270-11e1-bf27-001d0947ec73&name=Provider1&gateway_id=7dc235d0-c938-4b66-8f8c-c9037c7eace7&bulk_gateway_id=7dc235d0-c938-4b66-8f8c-c9037c7eace7&receipts_supported=true&sms_add_points=0.0'
 
 #
 # Networks
 #
-echo -n 'id=920a009a-5270-11e1-b961-001d0947ec73&name=test_network_1&country_code=375&numbers_len=12&prefixes=29;33;44&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/networks; echo
+post "networks" 'id=0456837f-e874-4b05-8e89-95ae20b897d2&name=Mobile%20Telesystems&country=Belarus&hex_code=&country_code=375&number_len=9&prefixes=292;295;296;297;298;33&gmt_diff=%2B2&dst=7,5,3;7,5,10&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&is_home=true&sms_points=1.0&sms_mult_points=1.0'
 
-echo -n 'id=3b25cd8e-5eca-11e1-bf77-00269e42f7a5&name=test_network_2&country_code=375&numbers_len=12&prefixes=25&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/networks; echo
+post "networks" 'id=6dd0af45-7cdf-41aa-954b-cc368fe1968e&name=Velcom%20Mobile%20Digital%20Comm.&country=Belarus&hex_code=&country_code=375&number_len=9&prefixes=291;293;296;299;44&gmt_diff=%2B2&dst=7,5,3;7,5,10&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&is_home=true&sms_points=1.0&sms_mult_points=1.0'
+
+post "networks" 'id=793e7b47-b248-4c86-a26f-eadfc44f84e2&name=Life&country=Belarus&hex_code=&country_code=375&number_len=9&prefixes=251;252;253;254;255;256;257;258;259&gmt_diff=%2B2&dst=7,5,3;7,5,10&provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&is_home=true&sms_points=1.0&sms_mult_points=1.0'
+
+#
+# Network maps
+#
+post "network_maps" 'id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&name=Belarus&network_ids=0456837f-e874-4b05-8e89-95ae20b897d2;6dd0af45-7cdf-41aa-954b-cc368fe1968e;793e7b47-b248-4c86-a26f-eadfc44f84e2'
 
 #
 # Customers
 #
 
 #
+# OneAPI
+
+# postpaid customer
+post "customers" 'customer_uuid=a3ddc34a-1793-11e2-9602-00269e42f7a5&customer_id=oneapi-postpaid&name=oneapi-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660003,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+
+post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/users" 'id=user&password=password&connection_types=oneapi'
+
+#
+# Soap
+
+# postpaid customer
+post "customers" 'customer_uuid=c173786e-63ce-11e2-8740-001d0947ec73&customer_id=soap-postpaid&name=soap-postpaid&allowed_sources=999,6,0&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=999,6,0&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+
+post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=password&connection_types=soap'
+
+#
+# MM-client
+
+# postpaid customer
+post "customers" 'customer_uuid=8032706a-b4ec-11e3-b3d7-00269e42f7a5&customer_id=1&name=mm-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660004,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+
+post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/users" "id=user&password=password&connection_types=mm"
+
+#
 # smppload
 
 # postpaid customer
-echo -n 'id=493b3678-9dc8-11e2-8cce-00269e42f7a5&system_id=&name=smppload-postpaid&originators=375296660002,1,1&networks=920a009a-5270-11e1-b961-001d0947ec73;3b25cd8e-5eca-11e1-bf77-00269e42f7a5&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_originator=375296660002,1,1&billing_type=postpaid&state=1' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers; echo
+post "customers" 'customer_uuid=493b3678-9dc8-11e2-8cce-00269e42f7a5&customer_id=&name=smppload-postpaid&allowed_sources=375296660002,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660002,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
 
-# users
-echo -n 'id=user&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo
-echo -n 'id=user2&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo
-echo -n 'id=user3&pswd=password&smpp_types=transmitter;receiver;transceiver;oneapi' | lwp-request -UsSe -m 'POST' 127.0.0.1:8080/customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users; echo
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user&password=password&connection_types=transmitter;receiver;transceiver"
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user2&password=password&connection_types=transmitter;receiver;transceiver"
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user3&password=password&connection_types=transmitter;receiver;transceiver"
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user4&password=password&connection_types=transmitter;receiver;transceiver"
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user5&password=password&connection_types=transmitter;receiver;transceiver"
+
+#
+# Addr2Cust
+#
+
+# oneapi postpaid customer
+post "addr2cust" 'msisdn=375296660003,1,1&customer=a3ddc34a-1793-11e2-9602-00269e42f7a5&user=undefined'
+# soap postpaid customer
+post "addr2cust" 'msisdn=375296660005,1,1&customer=c173786e-63ce-11e2-8740-001d0947ec73&user=undefined'
+
+exit 0
