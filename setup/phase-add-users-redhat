@@ -13,10 +13,13 @@ if [[ $? -eq 1 ]]; then
 
     # note, the password must be encrypted
     useradd -m -p $(openssl passwd -1 $ALLEY_PWD) -U -G wheel $ALLEY_USER -s /bin/bash
-    if [[ $? -ne 0 ]]; then
-        echo Failed to create $ALLEY_USER user
-        exit 1
-    fi
+    case "$?" in
+	"0") ;; # ok
+	"9") ;; # already exists
+	  *) 
+            echo Failed to create $ALLEY_USER user
+            exit 1
+    esac
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"
