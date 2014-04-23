@@ -41,6 +41,9 @@ if [[ $? -eq 1 ]]; then
     # skip building wx library as wxGTK-devel isn't available
     touch lib/wx/SKIP
 
+    # setup erlang build environment
+    export $ERLANG_ENV
+
     ./configure --prefix=$ERLANG_DIR
     if [[ $? -ne 0 ]]; then
         echo Failed to configure otp src
