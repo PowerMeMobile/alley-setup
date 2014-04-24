@@ -64,7 +64,7 @@ post "network_maps" 'id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&name=Belarus&networ
 # OneAPI
 
 # postpaid customer
-post "customers" 'customer_uuid=a3ddc34a-1793-11e2-9602-00269e42f7a5&customer_id=oneapi-postpaid&name=oneapi-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660003,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+post "customers" 'customer_uuid=a3ddc34a-1793-11e2-9602-00269e42f7a5&customer_id=oneapi-postpaid&name=oneapi-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660003,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=active'
 
 post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/users" 'id=user&password=password&connection_types=oneapi'
 
@@ -72,7 +72,7 @@ post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/users" 'id=user&password=pa
 # Soap
 
 # postpaid customer
-post "customers" 'customer_uuid=c173786e-63ce-11e2-8740-001d0947ec73&customer_id=soap-postpaid&name=soap-postpaid&allowed_sources=999,6,0&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=999,6,0&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+post "customers" 'customer_uuid=c173786e-63ce-11e2-8740-001d0947ec73&customer_id=soap-postpaid&name=soap-postpaid&allowed_sources=999,6,0&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=999,6,0&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=active'
 
 post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=password&connection_types=soap'
 
@@ -80,7 +80,7 @@ post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=pa
 # MM-client
 
 # postpaid customer
-post "customers" 'customer_uuid=8032706a-b4ec-11e3-b3d7-00269e42f7a5&customer_id=1&name=mm-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660004,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+post "customers" 'customer_uuid=8032706a-b4ec-11e3-b3d7-00269e42f7a5&customer_id=1&name=mm-postpaid&allowed_sources=375296660003,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660004,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=active'
 
 post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/users" "id=user&password=password&connection_types=mm"
 
@@ -88,7 +88,7 @@ post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/users" "id=user&password=pa
 # smppload
 
 # postpaid customer
-post "customers" 'customer_uuid=493b3678-9dc8-11e2-8cce-00269e42f7a5&customer_id=&name=smppload-postpaid&allowed_sources=375296660002,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660002,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=1'
+post "customers" 'customer_uuid=493b3678-9dc8-11e2-8cce-00269e42f7a5&customer_id=&name=smppload-postpaid&allowed_sources=375296660002,1,1&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=0a89542c-5270-11e1-bf27-001d0947ec73&default_source=375296660002,1,1&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&state=active'
 
 post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user&password=password&connection_types=transmitter;receiver;transceiver"
 post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user2&password=password&connection_types=transmitter;receiver;transceiver"
