@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HOST=127.0.0.1
+PORT=27017
+
+if [ $# -ne 1 ]; then
+   echo "usage: mongo_utils <config.count | config.remove | mailbox.count | mailbox.remove>"
+   exit 1
+fi
+
+command=$1
+
+mongo --quiet $HOST:$PORT --eval "var command=\"$command\"" mongo_utils.js
