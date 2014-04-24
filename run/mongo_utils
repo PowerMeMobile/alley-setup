@@ -2,6 +2,7 @@
 
 HOST=${MONGO_HOST-127.0.0.1}
 PORT=${MONGO_PORT-27017}
+DB=${MONGO_DB-kelly}
 SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
 SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
 
@@ -11,4 +12,4 @@ if [ $# -ne 1 ]; then
 fi
 
 command=$1
-mongo --quiet $HOST:$PORT --eval "var command=\"$command\"" $SCRIPT_DIR/mongo_utils.js
+mongo --quiet $HOST:$PORT/$DB --eval "var command=\"$command\"" $SCRIPT_DIR/mongo_utils.js
