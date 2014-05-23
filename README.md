@@ -42,7 +42,7 @@ $ run/start-all
 </pre>
 
 <pre>
-$ conf/test-config
+$ conf/http-conf.sh
 </pre>
 
 <pre>
