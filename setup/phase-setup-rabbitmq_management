@@ -16,7 +16,7 @@ if [[ $? -eq 1 ]]; then
     ./rabbitmq-plugins enable rabbitmq_management
 
     ./rabbitmq-server -detached
-    sleep 10
+    sleep 30
 
     curl -O http://localhost:15672/cli/rabbitmqadmin 2> /dev/null
     if [[ $? -ne 0 ]]; then
