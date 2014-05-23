@@ -14,6 +14,7 @@ fi
 
 /opt/just/bin/just stop
 /opt/kelly/bin/kelly stop
+/opt/soap_srv/bin/soap_srv stop
 /opt/funnel/bin/funnel stop
 
 killall mongod
