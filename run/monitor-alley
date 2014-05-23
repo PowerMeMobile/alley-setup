@@ -14,66 +14,66 @@ SEND_TO="dm.klionsky@gmail.com,d.klionsky@dev.powermemobile.com"
 CHECK_INTERVAL_SEC=7200
 
 function send_mail() {
-	local subject="$1"
-	local to="$2"
-	local from="$3"
-	local body="$4"
+    local subject="$1"
+    local to="$2"
+    local from="$3"
+    local body="$4"
 
-	local id=`lsb_release -i | sed -r 's/Distributor ID:\s(.*)/\1/'`
-	case "$id" in
-		LinuxMint|Ubuntu)
-			echo -e "$body" | mail -s "$subject" -a "From:$from" "$to"
-			;;
-		CentOS|RedHatEnterpriseServer)
-			echo -e "$body" | mail -s "$subject" -r "$from" "$to"
-			;;
-		*)
-			echo "Unknown system: $id"
-			exit 1
-			;;
-	esac
+    local id=`lsb_release -i | sed -r 's/Distributor ID:\s(.*)/\1/'`
+    case "$id" in
+        LinuxMint|Ubuntu)
+            echo -e "$body" | mail -s "$subject" -a "From:$from" "$to"
+            ;;
+        CentOS|RedHatEnterpriseServer)
+            echo -e "$body" | mail -s "$subject" -r "$from" "$to"
+            ;;
+        *)
+            echo "Unknown system: $id"
+            exit 1
+            ;;
+    esac
 }
 
 last_level="SUCCESS"
 
 while true; do
 
-	echo $last_level
+    echo $last_level
 
     # build the command
-	command="smppload -u $USER_ID -p $PASSWORD -s $SRC_ADDR -d $DST_ADDR -c $MSG_COUNT -D -v"
+    command="smppload -u $USER_ID -p $PASSWORD -s $SRC_ADDR -d $DST_ADDR -c $MSG_COUNT -D -v"
 
     # run and store the output
-	output=`$command`
+    output=`$command`
 
     # check exit code
-	if [[ $? != 0 ]]; then
-		level="CRITICAL"
-	else
+    if [[ $? != 0 ]]; then
+        level="CRITICAL"
+    else
         # check delivered count
-		delivered=`echo "$output" | sed -n -r "s/INFO:     Delivery success: (.*)/\1/p"`
-		echo $delivered
+        delivered=`echo "$output" | sed -n -r "s/INFO:     Delivery success: (.*)/\1/p"`
+        echo $delivered
 
-		if [[ "$delivered" -eq "$MSG_COUNT" ]]; then
-			level="SUCCESS"
-		elif [[ "0" -lt "$delivered" ]] && [[ "$delivered" -lt "$MSG_COUNT" ]]; then
-			level="WARNING"
-		else
-			level="CRITICAL"
-		fi
-	fi
+        if [[ "$delivered" -eq "$MSG_COUNT" ]]; then
+            level="SUCCESS"
+        elif [[ "0" -lt "$delivered" ]] && [[ "$delivered" -lt "$MSG_COUNT" ]]; then
+            level="WARNING"
+        else
+            level="CRITICAL"
+        fi
+    fi
 
-	if [[ $level != $last_level ]]; then
-		send_mail "$level" $SEND_TO $SEND_FROM "$command\n\n$output"
-		last_level=$level
-	fi
+    if [[ $level != $last_level ]]; then
+        send_mail "$level" $SEND_TO $SEND_FROM "$command\n\n$output"
+        last_level=$level
+    fi
 
-	echo $command
-	echo "$output"
-	echo
-	echo $last_level
-	echo
+    echo $command
+    echo "$output"
+    echo
+    echo $last_level
+    echo
 
-	sleep $CHECK_INTERVAL_SEC
+    sleep $CHECK_INTERVAL_SEC
 
 done
