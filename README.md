@@ -4,8 +4,8 @@ First download and unzip.
 
 <pre>
 $ cd /opt
-$ sudo wget https://github.com/PowerMeMobile/alley-setup/archive/master.zip
-$ sudo master.zip
+$ sudo wget -O master.zip https://github.com/PowerMeMobile/alley-setup/archive/master.zip
+$ sudo unzip master.zip
 $ cd /opt/alley-setup-master
 </pre>
 
