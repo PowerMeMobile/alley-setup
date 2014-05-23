@@ -3,10 +3,10 @@
 First download and unzip.
 
 <pre>
-$ cd /opt
-$ sudo wget -O master.zip https://github.com/PowerMeMobile/alley-setup/archive/master.zip
-$ sudo unzip master.zip
-$ cd /opt/alley-setup-master
+# cd /opt
+# wget -O master.zip https://github.com/PowerMeMobile/alley-setup/archive/master.zip
+# unzip master.zip
+# cd /opt/alley-setup-master
 </pre>
 
 Adjust setup/build configuration options in conf/setup.conf before going further.
@@ -15,27 +15,27 @@ It's possible to setup everything by running one command.
 The setup will create a new user, setup environment, setup OpenAlley, and setup autostart on reboot.
 
 <pre>
-$ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
+# setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 </pre>
 
 Or make partial setup by running:
 <pre>
-$ sudo setup/setup-env &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
-$ source /etc/profile
+# setup/setup-env &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
+# source /etc/profile
 </pre>
 
 <pre>
-$ sudo setup/setup-alley
+# setup/setup-alley
 </pre>
 
 <pre>
-$ sudo setup/setup-autostart
+# setup/setup-autostart
 </pre>
 
 Now login using just create new user.
 
 <pre>
-$ su - alley
+# su - alley
 </pre>
 
 <pre>
