@@ -14,6 +14,4 @@ fi
 
 touch $SCRIPT_DIR/../log/setup.log
 
-source $SCRIPT_DIR/setup-env $*
-source $SCRIPT_DIR/setup-alley $*
-source $SCRIPT_DIR/setup-autostart $*
+source $SCRIPT_DIR/phase-setup-autostart
