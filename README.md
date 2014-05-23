@@ -1,7 +1,12 @@
 # OpenAlley setup
 
+First download and unzip.
+
 <pre>
-$ cd /opt/alley-setup
+$ cd /opt
+$ sudo wget https://github.com/PowerMeMobile/alley-setup/archive/master.zip
+$ sudo master.zip
+$ cd /opt/alley-setup-master
 </pre>
 
 Adjust setup/build configuration options in conf/setup.conf before going further.
@@ -13,7 +18,7 @@ The setup will create a new user, setup environment, setup OpenAlley, and setup 
 $ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 </pre>
 
-Or, it's possible to make partial setup by running:
+Or make partial setup by running:
 <pre>
 $ sudo setup/setup-env &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 $ source /etc/profile
@@ -27,14 +32,14 @@ $ sudo setup/setup-alley
 $ sudo setup/setup-autostart
 </pre>
 
-Now login using new user.
+Now login using just create new user.
 
 <pre>
 $ su - alley
 </pre>
 
 <pre>
-$ cd /opt/alley-setup
+$ cd /opt/alley-setup-master
 </pre>
 
 <pre>
