@@ -4,12 +4,30 @@
 $ cd /opt/alley-setup
 </pre>
 
-The setup creates a new user and sets up autostart on reboot.
 Adjust setup/build configuration options in conf/setup.conf before going further.
+
+It's possible to setup everything by running one command.
+The setup will create a new user, setup environment, setup OpenAlley, and setup autostart on reboot.
 
 <pre>
 $ sudo setup/setup-all &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 </pre>
+
+Or, it's possible to make partial setup by running:
+<pre>
+$ sudo setup/setup-env &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
+$ source /etc/profile
+</pre>
+
+<pre>
+$ sudo setup/setup-alley
+</pre>
+
+<pre>
+$ sudo setup/setup-autostart
+</pre>
+
+Now login using new user.
 
 <pre>
 $ su - alley
