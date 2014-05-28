@@ -22,7 +22,7 @@ Or make partial setup by running:
 <pre>
 # setup/setup-env &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 # source /etc/profile
-# setup/setup-alley
+# setup/setup-alley &lt;centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch&gt;
 # setup/setup-autostart
 </pre>
 
