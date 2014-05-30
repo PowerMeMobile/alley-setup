@@ -45,6 +45,7 @@ source $SCRIPT_DIR/phase-setup-funnel
 source $SCRIPT_DIR/phase-setup-just
 source $SCRIPT_DIR/phase-setup-kelly
 source $SCRIPT_DIR/phase-setup-soap
+#source $SCRIPT_DIR/phase-setup-mm
 #source $SCRIPT_DIR/phase-setup-oneapi
 source $SCRIPT_DIR/phase-setup-snmp
 source $SCRIPT_DIR/phase-alley-cleanup

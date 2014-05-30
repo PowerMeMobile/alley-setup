@@ -1,0 +1,131 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    if [[ $BUILD_MM == true ]]; then
+        rm -rf $TMP_DIR/mm_srv
+
+        git clone https://github.com/PowerMeMobile/mm_srv.git $TMP_DIR/mm_srv
+        if [[ $? -ne 0 ]]; then
+            echo Failed to clone mm_srv
+            exit 1
+        fi
+
+        pushd $TMP_DIR/mm_srv
+
+        git checkout $MM_SRV_VER
+        if [[ $? -ne 0 ]]; then
+            echo Failed to checkout mm_srv $MM_VER
+            popd
+            exit 1
+        fi
+
+        make
+        if [[ $? -ne 0 ]]; then
+            echo Failed to build mm_srv
+            popd
+            exit 1
+        fi
+
+        mv rel/mm_srv mm_srv-$MM_VER-$DISTRO-x86_64
+        if [[ $? -ne 0 ]]; then
+            echo Failed to rename mm_srv release
+            popd
+            exit 1
+        fi
+
+        tar -czf mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz mm_srv-$MM_VER-$DISTRO-x86_64/
+        if [[ $? -ne 0 ]]; then
+            echo Failed to pack mm_srv
+            popd
+            exit 1
+        fi
+
+        popd
+
+        mv $TMP_DIR/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+        if [[ $? -ne 0 ]]; then
+            echo Failed to move mm_srv to distr
+            popd
+            exit 1
+        fi
+
+    fi
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz
+    if [[ $? -ne 0 ]]; then
+        echo Failed to unpack mm_srv
+        exit 1
+    fi
+
+    # TODO: on upgrade the link may already exist
+    ln -s /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln mm_srv
+        exit 1
+    fi
+
+    # create mm_srv dirs
+    mkdir -p $VAR_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to mkdir mm_srv
+        exit 1
+    fi
+
+    cp -r /opt/mm_srv/data $VAR_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy mm_srv data
+        exit 1
+    fi
+
+    cp -r /opt/mm_srv/log $VAR_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy mm_srv log
+        exit 1
+    fi
+
+    rm -rf /opt/mm_srv/data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm mm_srv data
+        exit 1
+    fi
+
+    rm -rf /opt/mm_srv/log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm mm_srv log
+        exit 1
+    fi
+
+    ln -s $VAR_DIR/mm_srv/data /opt/mm_srv/data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln mm_srv data
+        exit 1
+    fi
+
+    ln -s $VAR_DIR/mm_srv/log /opt/mm_srv/log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln mm_srv log
+        exit 1
+    fi
+
+    # setup file system permissions
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv $VAR_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to chown for opt/mm_srv var/mm_srv
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
