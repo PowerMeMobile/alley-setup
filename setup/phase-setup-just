@@ -12,6 +12,8 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_JUST == true ]]; then
+        rm -rf $TMP_DIR/just_mini
+
         git clone https://github.com/PowerMeMobile/just_mini_rel.git $TMP_DIR/just_mini
         if [[ $? -ne 0 ]]; then
             echo Failed to clone just

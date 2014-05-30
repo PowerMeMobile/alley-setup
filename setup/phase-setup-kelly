@@ -12,6 +12,8 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_KELLY == true ]]; then
+        rm -rf $TMP_DIR/kelly
+
         git clone https://github.com/PowerMeMobile/kelly.git $TMP_DIR/kelly
         if [[ $? -ne 0 ]]; then
             echo Failed to clone kelly

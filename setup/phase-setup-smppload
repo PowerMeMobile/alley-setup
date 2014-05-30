@@ -11,6 +11,8 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
+    rm -rf $TMP_DIR/smppload
+
     git clone https://github.com/PowerMeMobile/smppload.git $TMP_DIR/smppload
     if [[ $? -ne 0 ]]; then
         echo Failed to clone smppload

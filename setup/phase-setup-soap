@@ -12,6 +12,8 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_SOAP == true ]]; then
+        rm -rf $TMP_DIR/soap_srv
+
         git clone https://github.com/PowerMeMobile/soap_srv.git $TMP_DIR/soap_srv
         if [[ $? -ne 0 ]]; then
             echo Failed to clone soap_srv
