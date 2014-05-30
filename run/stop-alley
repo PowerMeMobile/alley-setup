@@ -12,5 +12,8 @@ if [[ "$(id -un)" == "root" ]]; then
     exit 1
 fi
 
-source $SCRIPT_DIR/stop-env
-source $SCRIPT_DIR/stop-alley
+/opt/funnel/bin/funnel stop
+/opt/just/bin/just stop
+/opt/kelly/bin/kelly stop
+/opt/soap_srv/bin/soap_srv stop
+/opt/mm_srv/bin/mm_srv stop
