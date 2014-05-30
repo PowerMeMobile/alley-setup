@@ -74,7 +74,7 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    # create Soap_Srv dirs
+    # create soap_srv dirs
     mkdir -p $VAR_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir soap_srv
