@@ -29,7 +29,7 @@ echo "SUCCESS"
 
 echo -e "\nStarting RabbitMQ..."
 rabbitmq-server -detached
-sleep 20
+sleep 30
 rabbitmqctl status
 if [ $? != 0 ]; then
     echo "FAILED"
@@ -47,7 +47,7 @@ echo "Environment started"
 
 echo -e "\nStarting Funnel..."
 /opt/funnel/bin/funnel start
-sleep 5
+sleep 10
 F=`/opt/funnel/bin/funnel ping`
 if [[ $F != 'pong' ]]; then
     echo $F
@@ -58,7 +58,7 @@ echo "SUCCESS"
 
 echo -e "\nStarting Kelly..."
 /opt/kelly/bin/kelly start
-sleep 5
+sleep 10
 K=`/opt/kelly/bin/kelly ping`
 if [[ $K != 'pong' ]]; then
     echo $K
@@ -69,7 +69,7 @@ echo "SUCCESS"
 
 echo -e "\nStarting Just..."
 /opt/just/bin/just start
-sleep 15
+sleep 20
 J=`/opt/just/bin/just ping`
 if [[ $J != 'pong' ]]; then
     echo $J
@@ -80,7 +80,7 @@ echo "SUCCESS"
 
 echo -e "\nStarting SOAP Srv..."
 /opt/soap_srv/bin/soap_srv start
-sleep 5
+sleep 10
 S=`/opt/soap_srv/bin/soap_srv ping`
 if [[ $S != 'pong' ]]; then
     echo $S
@@ -92,7 +92,7 @@ echo "SUCCESS"
 if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     echo -e "\nStarting MM Srv..."
     /opt/mm_srv/bin/mm_srv start
-    sleep 5
+    sleep 10
     M=`/opt/mm_srv/bin/mm_srv ping`
     if [[ $M != 'pong' ]]; then
         echo $M
