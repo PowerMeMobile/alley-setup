@@ -10,6 +10,8 @@ screen -t "kelly" bash -c "cd /opt/kelly; echo ./bin/kelly start \| stop \| ping
 
 screen -t "soap" bash -c "cd /opt/soap_srv; echo ./bin/soap_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
 
+screen -t "mm" bash -c "cd /opt/mm_srv; echo ./bin/mm_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
 screen -t "just" bash -c "cd /opt/just; echo ./bin/just start \| stop \| ping \| console \| attach \| top; echo; exec bash"
 
 screen -t "smppsim" bash -c "cd /opt/SMPPSim; echo ./startsmppsim.sh; echo; exec bash"

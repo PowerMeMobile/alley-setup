@@ -89,6 +89,19 @@ if [[ $S != 'pong' ]]; then
 fi
 echo "SUCCESS"
 
+if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
+    echo -e "\nStarting MM Srv..."
+    /opt/mm_srv/bin/mm_srv start
+    sleep 5
+    M=`/opt/mm_srv/bin/mm_srv ping`
+    if [[ $M != 'pong' ]]; then
+        echo $M
+        echo "FAILED"
+        exit 1
+    fi
+    echo "SUCCESS"
+fi
+
 echo "Alley started"
 
 echo "All started"

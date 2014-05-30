@@ -14,7 +14,7 @@ if [[ $? -eq 1 ]]; then
     if [[ $BUILD_MM == true ]]; then
         rm -rf $TMP_DIR/mm_srv
 
-        git clone https://github.com/PowerMeMobile/mm_srv.git $TMP_DIR/mm_srv
+        git clone git@github.com:PowerMeMobile/mm_srv.git $TMP_DIR/mm_srv
         if [[ $? -ne 0 ]]; then
             echo Failed to clone mm_srv
             exit 1
