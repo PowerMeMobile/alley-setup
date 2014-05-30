@@ -45,17 +45,17 @@ $ conf/http-conf.sh
 </pre>
 
 <pre>
-$ run/check-alley
-Connected to 127.0.0.1:2775
-Bound to Funnel
-Stats:
-   Send success:     10
-   Delivery success: 10
-   Send fail:        0
-   Delivery fail:    0
-   Errors:           0
-   Avg Rps:          2 mps
-Unbound
+$ smppload -uuser -ppassword -s375296660002 -d375291112233 -c10 -D -v
+INFO:  Connected to 127.0.0.1:2775
+INFO:  Bound to Funnel
+INFO:  Stats:
+INFO:     Send success:     10
+INFO:     Delivery success: 10
+INFO:     Send fail:        0
+INFO:     Delivery fail:    0
+INFO:     Errors:           0
+INFO:     Avg Rps:          2 mps
+INFO:  Unbound
 </pre>
 
 <pre>
