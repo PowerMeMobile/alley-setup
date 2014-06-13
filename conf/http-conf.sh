@@ -66,7 +66,7 @@ post "network_maps" 'id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&name=Belarus&networ
 post "customers" 'customer_uuid=a3ddc34a-1793-11e2-9602-00269e42f7a5&customer_id=oneapi-postpaid&name=oneapi-postpaid&priority=1&rps=1000&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&language=en&state=active'
 
 # postpaid originators
-post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/originators" 'id=1&address=375296660003,1,1&description=&is_default=true&state=approved'
+post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/originators" 'id=ede7b0a0-f2d3-11e3-aec1-00269e42f7a5&address=375296660003,1,1&description=&is_default=true&state=approved'
 
 # postpaid users
 post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/users" 'id=user&password=password&connection_types=oneapi&mobile_phone=&first_name=&last_name=&company=&occupation=&email=&country=&language=en&state=active'
@@ -79,7 +79,7 @@ post "customers/a3ddc34a-1793-11e2-9602-00269e42f7a5/users" 'id=user&password=pa
 post "customers" 'customer_uuid=c173786e-63ce-11e2-8740-001d0947ec73&customer_id=soap-postpaid&name=soap-postpaid&priority=1&rps=1000&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&language=en&state=active'
 
 # postpaid originators
-post "customers/c173786e-63ce-11e2-8740-001d0947ec73/originators" 'id=1&address=999,6,0&description=&is_default=true&state=approved'
+post "customers/c173786e-63ce-11e2-8740-001d0947ec73/originators" 'id=8cb7aa6e-f2d4-11e3-9a73-00269e42f7a5&address=999,6,0&description=&is_default=true&state=approved'
 
 # postpaid users
 post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=password&connection_types=soap&mobile_phone=&first_name=&last_name=&company=&occupation=&email=&country=&language=en&state=active'
@@ -91,7 +91,8 @@ post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=pa
 post "customers" 'customer_uuid=8032706a-b4ec-11e3-b3d7-00269e42f7a5&customer_id=1&name=mm-postpaid&priority=1&rps=1000&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&language=en&state=active'
 
 # postpaid originators
-post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/originators" 'id=1&address=375296660004,1,1&description=&is_default=true&state=approved'
+post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/originators" 'id=d8372096-f2d4-11e3-950a-00269e42f7a5&address=375296660004,1,1&description=&is_default=true&state=approved'
+post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/originators" 'id=1165be86-f2d5-11e3-950a-00269e42f7a5&address=AlfaOrig,5,0&description=&is_default=false&state=approved'
 
 # postpaid users
 post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/users" "id=user&password=password&connection_types=mm&mobile_phone=&first_name=&last_name=&company=&occupation=&email=&country=&language=en&state=active"
@@ -103,8 +104,8 @@ post "customers/8032706a-b4ec-11e3-b3d7-00269e42f7a5/users" "id=user&password=pa
 post "customers" 'customer_uuid=493b3678-9dc8-11e2-8cce-00269e42f7a5&customer_id=&name=smppload-postpaid&priority=1&rps=1000&network_map_id=c51a94bf-618a-48a4-90bf-7508e3d93b5d&receipts_allowed=true&default_validity=000003000000000R&max_validity=259200&default_provider_id=&pay_type=postpaid&credit=10000.0&credit_limit=10000.0&language=en&state=active'
 
 # postpaid originators
-post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/originators" 'id=1&address=375296660002,1,1&description=&is_default=true&state=approved'
-post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/originators" 'id=2&address=375296660003,1,1&description=&is_default=false&state=approved'
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/originators" 'id=c71175cc-f091-11e3-8ee4-00269e42f7a5&address=375296660002,1,1&description=&is_default=true&state=approved'
+post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/originators" 'id=cfefe958-f091-11e3-8ee4-00269e42f7a5&address=375296660003,1,1&description=&is_default=false&state=approved'
 
 # postpaid users
 post "customers/493b3678-9dc8-11e2-8cce-00269e42f7a5/users" "id=user&password=password&connection_types=transmitter;receiver;transceiver&mobile_phone=&first_name=&last_name=&company=&occupation=&email=&country=&language=en&state=active"
