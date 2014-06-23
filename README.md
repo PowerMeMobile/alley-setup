@@ -1,4 +1,4 @@
-# OpenAlley setup
+# Open Alley setup
 
 First download and unzip.
 
@@ -60,5 +60,5 @@ INFO:  Unbound
 
 <pre>
 $ run/get-alley-statuses
-{"delivered":10}
+{"unrecognized":0,"rejected":0,"accepted":0,"deleted":0,"expired":0,"delivered":10,"failed":0,"sent":0,"received":0,"undeliverable":0,"enroute":0,"pending":0,"unknown":0}
 </pre>
