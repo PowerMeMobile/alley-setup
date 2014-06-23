@@ -26,7 +26,7 @@ Or make partial setup by running:
 # setup/setup-autostart
 </pre>
 
-Now login using just create new user.
+Now login using the created user.
 
 <pre>
 # su - alley
