@@ -49,6 +49,12 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
+    ln -s $LOG_DIR/rabbitmq /opt/rabbitmq/log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln rabbitmq log
+        exit 1
+    fi
+
     # setup file system permissions
     chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $DATA_DIR/rabbitmq $LOG_DIR/rabbitmq
     if [[ $? -ne 0 ]]; then
