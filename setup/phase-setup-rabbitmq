@@ -43,18 +43,6 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    cp -r /opt/rabbitmq/data $DATA_DIR/rabbitmq
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy rabbitmq data
-        exit 1
-    fi
-
-    rm -rf /opt/rabbitmq/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to rm rabbitmq data
-        exit 1
-    fi
-
     ln -s $DATA_DIR/rabbitmq/data /opt/rabbitmq/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln rabbitmq data
