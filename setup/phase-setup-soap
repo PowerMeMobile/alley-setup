@@ -118,7 +118,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv $DATA_DIR/soap_srv $LOG/soap_srv
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv $DATA_DIR/soap_srv $LOG_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to chown soap_srv
         exit 1
