@@ -75,19 +75,19 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # create soap_srv dirs
-    mkdir -p $VAR_DIR/soap_srv
+    mkdir -p $DATA_DIR/soap_srv $LOG_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir soap_srv
         exit 1
     fi
 
-    cp -r /opt/soap_srv/data $VAR_DIR/soap_srv
+    cp -r /opt/soap_srv/data $DATA_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to copy soap_srv data
         exit 1
     fi
 
-    cp -r /opt/soap_srv/log $VAR_DIR/soap_srv
+    cp -r /opt/soap_srv/log/* $LOG_DIR/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to copy soap_srv log
         exit 1
@@ -105,22 +105,22 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    ln -s $VAR_DIR/soap_srv/data /opt/soap_srv/data
+    ln -s $DATA_DIR/soap_srv/data /opt/soap_srv/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln soap_srv data
         exit 1
     fi
 
-    ln -s $VAR_DIR/soap_srv/log /opt/soap_srv/log
+    ln -s $LOG_DIR/soap_srv /opt/soap_srv/log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln soap_srv log
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv $VAR_DIR/soap_srv
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv $DATA_DIR/soap_srv $LOG/soap_srv
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for opt/soap_srv var/soap_srv
+        echo Failed to chown soap_srv
         exit 1
     fi
 

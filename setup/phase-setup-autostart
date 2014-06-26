@@ -11,7 +11,7 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    sed -e "s:{{DB_DIR}}:$DB_DIR:;s:{{VAR_DIR}}:$VAR_DIR:" $SCRIPT_DIR/../run/autostart-alley.template > /opt/bin/start-alley
+    sed -e "s:{{DB_DIR}}:$DB_DIR:;s:{{LOG_DIR}}:$LOG_DIR:" $SCRIPT_DIR/../run/autostart-alley.template > /opt/bin/start-alley
     if [[ $? -ne 0 ]]; then
         echo "Failed to copy start-alley to /opt/bin"
         exit 1

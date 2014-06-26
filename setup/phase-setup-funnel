@@ -75,19 +75,19 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # create Funnel dirs
-    mkdir -p $VAR_DIR/funnel
+    mkdir -p $DATA_DIR/funnel $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir funnel
         exit 1
     fi
 
-    cp -r /opt/funnel/data $VAR_DIR/funnel
+    cp -r /opt/funnel/data $DATA_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel data
         exit 1
     fi
 
-    cp -r /opt/funnel/log $VAR_DIR/funnel
+    cp -r /opt/funnel/log/* $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel log
         exit 1
@@ -105,22 +105,22 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    ln -s $VAR_DIR/funnel/data /opt/funnel/data
+    ln -s $DATA_DIR/funnel/data /opt/funnel/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel data
         exit 1
     fi
 
-    ln -s $VAR_DIR/funnel/log /opt/funnel/log
+    ln -s $LOG_DIR/funnel /opt/funnel/log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel log
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel $VAR_DIR/funnel
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel $DATA_DIR/funnel $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for opt/funnel var/funnel
+        echo Failed to chown funnel
         exit 1
     fi
 

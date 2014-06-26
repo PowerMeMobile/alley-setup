@@ -18,7 +18,7 @@ echo -e "\nStarting MongoDB db..."
 NOFILE=$(ulimit -n)
 NPROC=$(ulimit -u)
 ulimit -n 64000 -u 32000
-mongod --port 27017 --dbpath $DB_DIR/data/ --logpath $VAR_DIR/mongodb/db/log/mongodb.log --logappend --fork
+mongod --port 27017 --dbpath $DB_DIR/data/ --logpath $LOG_DIR/mongodb/mongodb.log --logappend --fork
 ulimit -n $NOFILE -u $NPROC
 ps x | grep [m]ongod.*27017 &> /dev/null
 if [[ $? != 0 ]]; then

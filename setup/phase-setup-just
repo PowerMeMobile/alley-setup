@@ -75,19 +75,19 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # create Just dirs
-    mkdir -p $VAR_DIR/just
+    mkdir -p $DATA_DIR/just $LOG_DIR/just
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir just
         exit 1
     fi
 
-    cp -r /opt/just/data $VAR_DIR/just
+    cp -r /opt/just/data $DATA_DIR/just
     if [[ $? -ne 0 ]]; then
         echo Failed to copy just data
         exit 1
     fi
 
-    cp -r /opt/just/log $VAR_DIR/just
+    cp -r /opt/just/log/* $LOG_DIR/just
     if [[ $? -ne 0 ]]; then
         echo Failed to copy just log
         exit 1
@@ -105,22 +105,22 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    ln -s $VAR_DIR/just/data /opt/just/data
+    ln -s $DATA_DIR/just/data /opt/just/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln just data
         exit 1
     fi
 
-    ln -s $VAR_DIR/just/log /opt/just/log
+    ln -s $LOG_DIR/just /opt/just/log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln just log
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just $VAR_DIR/just
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just $DATA_DIR/just $LOG_DIR/just
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for opt/just var/just
+        echo Failed to chown just
         exit 1
     fi
 

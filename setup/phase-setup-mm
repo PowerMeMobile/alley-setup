@@ -75,19 +75,19 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # create mm_srv dirs
-    mkdir -p $VAR_DIR/mm_srv
+    mkdir -p $DATA_DIR/mm_srv $LOG_DIR/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir mm_srv
         exit 1
     fi
 
-    cp -r /opt/mm_srv/data $VAR_DIR/mm_srv
+    cp -r /opt/mm_srv/data $DATA_DIR/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to copy mm_srv data
         exit 1
     fi
 
-    cp -r /opt/mm_srv/log $VAR_DIR/mm_srv
+    cp -r /opt/mm_srv/log/* $LOG_DIR/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to copy mm_srv log
         exit 1
@@ -105,22 +105,22 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    ln -s $VAR_DIR/mm_srv/data /opt/mm_srv/data
+    ln -s $DATA_DIR/mm_srv/data /opt/mm_srv/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln mm_srv data
         exit 1
     fi
 
-    ln -s $VAR_DIR/mm_srv/log /opt/mm_srv/log
+    ln -s $LOG_DIR/mm_srv /opt/mm_srv/log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln mm_srv log
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv $VAR_DIR/mm_srv
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv $DATA_DIR/mm_srv $LOG_DIR/mm_srv
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for opt/mm_srv var/mm_srv
+        echo Failed to chown mm_srv
         exit 1
     fi
 

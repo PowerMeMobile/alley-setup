@@ -36,16 +36,16 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mkdir -p $VAR_DIR/rabbitmq/log $VAR_DIR/rabbitmq/mnesia
+    mkdir -p $DATA_DIR/rabbitmq/data/mnesia $LOG_DIR/rabbitmq
     if [[ $? -ne 0 ]]; then
-        echo Failed to mkdir var/rabbitmq
+        echo Failed to mkdir rabbitmq
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $VAR_DIR/rabbitmq
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/rabbitmq_server-$RABBITMQ_VER /opt/rabbitmq $DATA_DIR/rabbitmq $LOG_DIR/rabbitmq
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for rabbitmq
+        echo Failed to chown rabbitmq
         exit 1
     fi
 

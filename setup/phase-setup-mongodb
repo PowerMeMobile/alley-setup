@@ -53,15 +53,15 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mkdir -p $VAR_DIR/mongodb/db/log
+    mkdir -p $LOG_DIR/mongodb/
     if [[ $? -ne 0 ]]; then
-        echo Failed to mkdir var/mongodb
+        echo Failed to mkdir mongodb log
         exit 1
     fi
 
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/mongodb-linux-x86_64-$MONGODB_VER /opt/mongodb $DB_DIR $VAR_DIR/mongodb
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/mongodb-linux-x86_64-$MONGODB_VER /opt/mongodb $DB_DIR $LOG_DIR/mongodb
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for dbs
+        echo Failed to chown mongodb
         exit 1
     fi
 

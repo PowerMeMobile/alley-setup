@@ -75,19 +75,19 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # create Kelly dirs
-    mkdir -p $VAR_DIR/kelly
+    mkdir -p $DATA_DIR/kelly $LOG_DIR/kelly
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir kelly
         exit 1
     fi
 
-    cp -r /opt/kelly/data $VAR_DIR/kelly
+    cp -r /opt/kelly/data $DATA_DIR/kelly
     if [[ $? -ne 0 ]]; then
         echo Failed to copy kelly data
         exit 1
     fi
 
-    cp -r /opt/kelly/log $VAR_DIR/kelly
+    cp -r /opt/kelly/log/* $LOG_DIR/kelly
     if [[ $? -ne 0 ]]; then
         echo Failed to copy kelly log
         exit 1
@@ -105,22 +105,22 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    ln -s $VAR_DIR/kelly/data /opt/kelly/data
+    ln -s $DATA_DIR/kelly/data /opt/kelly/data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln kelly data
         exit 1
     fi
 
-    ln -s $VAR_DIR/kelly/log /opt/kelly/log
+    ln -s $LOG_DIR/kelly /opt/kelly/log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln kelly log
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly $VAR_DIR/kelly
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly $DATA_DIR/kelly $LOG_DIR/kelly
     if [[ $? -ne 0 ]]; then
-        echo Failed to chown for opt/kelly var/kelly
+        echo Failed to chown kelly
         exit 1
     fi
 
