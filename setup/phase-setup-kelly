@@ -87,11 +87,11 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    cp -r /opt/kelly/log/* $LOG_DIR/kelly
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy kelly log
-        exit 1
-    fi
+    #cp -r /opt/kelly/log/* $LOG_DIR/kelly
+    #if [[ $? -ne 0 ]]; then
+    #    echo Failed to copy kelly log
+    #    exit 1
+    #fi
 
     rm -rf /opt/kelly/data
     if [[ $? -ne 0 ]]; then
