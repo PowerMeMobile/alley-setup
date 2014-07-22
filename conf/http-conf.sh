@@ -80,6 +80,7 @@ post "customers" 'customer_uuid=c173786e-63ce-11e2-8740-001d0947ec73&customer_id
 
 # postpaid originators
 post "customers/c173786e-63ce-11e2-8740-001d0947ec73/originators" 'id=8cb7aa6e-f2d4-11e3-9a73-00269e42f7a5&address=999,6,0&description=&is_default=true&state=approved'
+post "customers/c173786e-63ce-11e2-8740-001d0947ec73/originators" 'id=e1783f42-11b9-11e4-9166-0015588e6deb&address=SMS,5,0&description=&is_default=false&state=approved'
 
 # postpaid users
 post "customers/c173786e-63ce-11e2-8740-001d0947ec73/users" 'id=user&password=password&connection_types=soap&mobile_phone=&first_name=&last_name=&company=&occupation=&email=&country=&language=en&state=active'
