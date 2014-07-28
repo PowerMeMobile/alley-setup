@@ -27,9 +27,9 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    pushd /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64
+    pushd /opt/kelly-$KELLY_VER-$DISTRO-x86_64
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64
+        echo Failed to change dir to /opt/kelly-$KELLY_VER-$DISTRO-x86_64
         exit 1
     fi
 
@@ -78,7 +78,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64 /opt/kelly
+    ln -s /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly
     if [[ $? -ne 0 ]]; then
         echo Failed to ln kelly
         exit 1
