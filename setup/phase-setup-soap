@@ -85,7 +85,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # change app configuration warning
-    if [[ "$previous" != "" ]]; thenpp
+    if [[ "$previous" != "" ]]; then
         echo diff $previous/releases/1/sys.config /opt/soap_srv/releases/1/sys.config
         diff $previous/releases/1/sys.config /opt/soap_srv/releases/1/sys.config
         if [[ $? -ne 0 ]]; then
