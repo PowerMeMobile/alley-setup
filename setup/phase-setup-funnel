@@ -21,53 +21,69 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    # TODO: on upgrade the link may already exist
-    ln -s /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln funnel
-        exit 1
-    fi
-
-    # create Funnel dirs
-    mkdir -p $DATA_DIR/funnel $LOG_DIR/funnel
+    mkdir -p $DATA_DIR/funnel/data $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir funnel
         exit 1
     fi
 
-    cp -r /opt/funnel/data $DATA_DIR/funnel
+    pushd /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to change dir to /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64
+        exit 1
+    fi
+
+    cp -r data/* $DATA_DIR/funnel/data
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel data
         exit 1
     fi
 
-    cp -r /opt/funnel/log/* $LOG_DIR/funnel
+    cp -r log/* $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel log
         exit 1
     fi
 
-    rm -rf /opt/funnel/data
+    rm -rf data
     if [[ $? -ne 0 ]]; then
         echo Failed to rm funnel data
         exit 1
     fi
 
-    rm -rf /opt/funnel/log
+    rm -rf log
     if [[ $? -ne 0 ]]; then
         echo Failed to rm funnel log
         exit 1
     fi
 
-    ln -s $DATA_DIR/funnel/data /opt/funnel/data
+    ln -s $DATA_DIR/funnel/data data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel data
         exit 1
     fi
 
-    ln -s $LOG_DIR/funnel /opt/funnel/log
+    ln -s $LOG_DIR/funnel log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel log
+        exit 1
+    fi
+
+    popd
+
+    # remove old link
+    if [[ `readlink /opt/funnel` != "" ]]; then
+        rm /opt/funnel
+        cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+    fi
+
+    # setup link
+    ln -s /opt/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64 /opt/funnel
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln funnel
         exit 1
     fi
 
