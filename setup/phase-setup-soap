@@ -21,54 +21,79 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    # TODO: on upgrade the link may already exist
+    mkdir -p $DATA_DIR/soap_srv/data $LOG_DIR/soap_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to mkdir soap_srv
+        exit 1
+    fi
+
+    pushd /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to change dir to /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64
+        exit 1
+    fi
+
+    cp -r -u data/* $DATA_DIR/soap_srv/data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy soap_srv data
+        exit 1
+    fi
+
+    cp -r -u log/* $LOG_DIR/soap_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy soap_srv log
+        exit 1
+    fi
+
+    rm -rf data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm soap_srv data
+        exit 1
+    fi
+
+    rm -rf log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm soap_srv log
+        exit 1
+    fi
+
+    ln -s $DATA_DIR/soap_srv/data data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln soap_srv data
+        exit 1
+    fi
+
+    ln -s $LOG_DIR/soap_srv log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln soap_srv log
+        exit 1
+    fi
+
+    popd
+
+    # remove old link
+    previous=`readlink /opt/soap_srv`
+    if [[ "$previous" != "" ]]; then
+        rm /opt/soap_srv
+    fi
+
+    # setup link
     ln -s /opt/soap_srv-$SOAP_VER-$DISTRO-x86_64 /opt/soap_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to ln soap_srv
         exit 1
     fi
 
-    # create soap_srv dirs
-    mkdir -p $DATA_DIR/soap_srv $LOG_DIR/soap_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to mkdir soap_srv
-        exit 1
-    fi
-
-    cp -r /opt/soap_srv/data $DATA_DIR/soap_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy soap_srv data
-        exit 1
-    fi
-
-    cp -r /opt/soap_srv/log/* $LOG_DIR/soap_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy soap_srv log
-        exit 1
-    fi
-
-    rm -rf /opt/soap_srv/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to rm soap_srv data
-        exit 1
-    fi
-
-    rm -rf /opt/soap_srv/log
-    if [[ $? -ne 0 ]]; then
-        echo Failed to rm soap_srv log
-        exit 1
-    fi
-
-    ln -s $DATA_DIR/soap_srv/data /opt/soap_srv/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln soap_srv data
-        exit 1
-    fi
-
-    ln -s $LOG_DIR/soap_srv /opt/soap_srv/log
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln soap_srv log
-        exit 1
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; thenpp
+        echo diff $previous/releases/1/sys.config /opt/soap_srv/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/soap_srv/releases/1/sys.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
     fi
 
     # setup file system permissions
