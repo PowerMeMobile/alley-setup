@@ -72,12 +72,9 @@ if [[ $? -eq 1 ]]; then
     popd
 
     # remove old link
-    if [[ `readlink /opt/funnel` != "" ]]; then
+    local previous=`readlink /opt/funnel`
+    if [[ "$previous" != "" ]]; then
         rm /opt/funnel
-        cat << EOF
-WARNING!
-Don't forget to change application configuration.
-EOF
     fi
 
     # setup link
@@ -85,6 +82,17 @@ EOF
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel
         exit 1
+    fi
+
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; then
+        diff $previous/etc/app.config /opt/funnel/etc/app.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
     fi
 
     # setup file system permissions
