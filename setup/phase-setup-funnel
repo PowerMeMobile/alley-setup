@@ -12,53 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_FUNNEL == true ]]; then
-        rm -rf $TMP_DIR/funnel_mini
-
-        git clone https://github.com/PowerMeMobile/funnel_mini_rel.git $TMP_DIR/funnel_mini
-        if [[ $? -ne 0 ]]; then
-            echo Failed to clone funnel
-            exit 1
-        fi
-
-        pushd $TMP_DIR/funnel_mini
-
-        git checkout $FUNNEL_VER
-        if [[ $? -ne 0 ]]; then
-            echo Failed to checkout funnel $FUNNEL_VER
-            popd
-            exit 1
-        fi
-
-        make
-        if [[ $? -ne 0 ]]; then
-            echo Failed to build funnel
-            popd
-            exit 1
-        fi
-
-        mv funnel_mini funnel_mini-$FUNNEL_VER-$DISTRO-x86_64
-        if [[ $? -ne 0 ]]; then
-            echo Failed to rename funnel release
-            popd
-            exit 1
-        fi
-
-        tar -czf funnel_mini-$FUNNEL_VER-$DISTRO-x86_64.tar.gz funnel_mini-$FUNNEL_VER-$DISTRO-x86_64/
-        if [[ $? -ne 0 ]]; then
-            echo Failed to pack funnel
-            popd
-            exit 1
-        fi
-
-        popd
-
-        mv $TMP_DIR/funnel_mini/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
-        if [[ $? -ne 0 ]]; then
-            echo Failed to move funnel to distr
-            popd
-            exit 1
-        fi
-
+        source phase-build-funnel
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64.tar.gz
