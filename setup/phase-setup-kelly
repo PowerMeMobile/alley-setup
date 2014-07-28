@@ -12,53 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_KELLY == true ]]; then
-        rm -rf $TMP_DIR/kelly
-
-        git clone https://github.com/PowerMeMobile/kelly.git $TMP_DIR/kelly
-        if [[ $? -ne 0 ]]; then
-            echo Failed to clone kelly
-            exit 1
-        fi
-
-        pushd $TMP_DIR/kelly
-
-        git checkout $KELLY_VER
-        if [[ $? -ne 0 ]]; then
-            echo Failed to checkout kelly $KELLY_VER
-            popd
-            exit 1
-        fi
-
-        make
-        if [[ $? -ne 0 ]]; then
-            echo Failed to build kelly
-            popd
-            exit 1
-        fi
-
-        mv rel/kelly kelly-$KELLY_VER-$DISTRO-x86_64
-        if [[ $? -ne 0 ]]; then
-            echo Failed to rename kelly release
-            popd
-            exit 1
-        fi
-
-        tar -czf kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz kelly-$KELLY_VER-$DISTRO-x86_64/
-        if [[ $? -ne 0 ]]; then
-            echo Failed to pack kelly
-            popd
-            exit 1
-        fi
-
-        popd
-
-        mv $TMP_DIR/kelly/kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
-        if [[ $? -ne 0 ]]; then
-            echo Failed to move kelly to distr
-            popd
-            exit 1
-        fi
-
+        source $SCRIPT_DIR/phase-build-kelly
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz

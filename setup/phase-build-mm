@@ -1,0 +1,65 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    rm -rf $TMP_DIR/mm_srv
+
+    git clone git@github.com:PowerMeMobile/mm_srv.git $TMP_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to clone mm_srv
+        exit 1
+    fi
+
+    pushd $TMP_DIR/mm_srv
+
+    git checkout $MM_SRV_VER
+    if [[ $? -ne 0 ]]; then
+        echo Failed to checkout mm_srv $MM_VER
+        popd
+        exit 1
+    fi
+
+    make
+    if [[ $? -ne 0 ]]; then
+        echo Failed to build mm_srv
+        popd
+        exit 1
+    fi
+
+    mv rel/mm_srv mm_srv-$MM_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rename mm_srv release
+        popd
+        exit 1
+    fi
+
+    tar -czf mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz mm_srv-$MM_VER-$DISTRO-x86_64/
+    if [[ $? -ne 0 ]]; then
+        echo Failed to pack mm_srv
+        popd
+        exit 1
+    fi
+
+    popd
+
+    mv $TMP_DIR/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    if [[ $? -ne 0 ]]; then
+        echo Failed to move mm_srv to distr
+        popd
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
