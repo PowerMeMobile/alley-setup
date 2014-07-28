@@ -21,54 +21,79 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    # TODO: on upgrade the link may already exist
-    ln -s /opt/kelly-$KELLY_VER-$DISTRO-x86_64 /opt/kelly
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln kelly
-        exit 1
-    fi
-
-    # create Kelly dirs
-    mkdir -p $DATA_DIR/kelly $LOG_DIR/kelly
+    mkdir -p $DATA_DIR/kelly/data $LOG_DIR/kelly
     if [[ $? -ne 0 ]]; then
         echo Failed to mkdir kelly
         exit 1
     fi
 
-    cp -r /opt/kelly/data $DATA_DIR/kelly
+    pushd /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to change dir to /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64
+        exit 1
+    fi
+
+    cp -r -u data/* $DATA_DIR/kelly/data
     if [[ $? -ne 0 ]]; then
         echo Failed to copy kelly data
         exit 1
     fi
 
-    #cp -r /opt/kelly/log/* $LOG_DIR/kelly
+    #cp -r -u log/* $LOG_DIR/kelly
     #if [[ $? -ne 0 ]]; then
     #    echo Failed to copy kelly log
     #    exit 1
     #fi
 
-    rm -rf /opt/kelly/data
+    rm -rf data
     if [[ $? -ne 0 ]]; then
         echo Failed to rm kelly data
         exit 1
     fi
 
-    rm -rf /opt/kelly/log
+    rm -rf log
     if [[ $? -ne 0 ]]; then
         echo Failed to rm kelly log
         exit 1
     fi
 
-    ln -s $DATA_DIR/kelly/data /opt/kelly/data
+    ln -s $DATA_DIR/kelly/data data
     if [[ $? -ne 0 ]]; then
         echo Failed to ln kelly data
         exit 1
     fi
 
-    ln -s $LOG_DIR/kelly /opt/kelly/log
+    ln -s $LOG_DIR/kelly log
     if [[ $? -ne 0 ]]; then
         echo Failed to ln kelly log
         exit 1
+    fi
+
+    popd
+
+    # remove old link
+    previous=`readlink /opt/kelly`
+    if [[ "$previous" != "" ]]; then
+        rm /opt/kelly
+    fi
+
+    # setup link
+    ln -s /opt/kelly_mini-$KELLY_VER-$DISTRO-x86_64 /opt/kelly
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln kelly
+        exit 1
+    fi
+
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; then
+        echo diff $previous/releases/1/sys.config /opt/kelly/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/kelly/releases/1/sys.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
     fi
 
     # setup file system permissions
