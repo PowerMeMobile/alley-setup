@@ -69,6 +69,8 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
+    popd
+
     # remove old link
     previous=`readlink /opt/just`
     if [[ "$previous" != "" ]]; then
