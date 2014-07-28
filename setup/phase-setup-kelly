@@ -33,11 +33,11 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    cp -r -u data/* $DATA_DIR/kelly/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy kelly data
-        exit 1
-    fi
+    #cp -r -u data/* $DATA_DIR/kelly/data
+    #if [[ $? -ne 0 ]]; then
+    #    echo Failed to copy kelly data
+    #    exit 1
+    #fi
 
     #cp -r -u log/* $LOG_DIR/kelly
     #if [[ $? -ne 0 ]]; then
