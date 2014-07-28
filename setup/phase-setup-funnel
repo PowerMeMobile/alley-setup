@@ -33,13 +33,13 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    cp -r data/* $DATA_DIR/funnel/data
+    cp -r -u data/* $DATA_DIR/funnel/data
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel data
         exit 1
     fi
 
-    cp -r log/* $LOG_DIR/funnel
+    cp -r -u log/* $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to copy funnel log
         exit 1
