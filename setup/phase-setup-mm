@@ -21,54 +21,79 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    # TODO: on upgrade the link may already exist
+    mkdir -p $DATA_DIR/mm_srv/data $LOG_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to mkdir mm_srv
+        exit 1
+    fi
+
+    pushd /opt/mm_srv-$MM_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to change dir to /opt/mm_srv-$MM_VER-$DISTRO-x86_64
+        exit 1
+    fi
+
+    cp -r -u data/* $DATA_DIR/mm_srv/data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy mm_srv data
+        exit 1
+    fi
+
+    cp -r -u log/* $LOG_DIR/mm_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy mm_srv log
+        exit 1
+    fi
+
+    rm -rf data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm mm_srv data
+        exit 1
+    fi
+
+    rm -rf log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm mm_srv log
+        exit 1
+    fi
+
+    ln -s $DATA_DIR/mm_srv/data data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln mm_srv data
+        exit 1
+    fi
+
+    ln -s $LOG_DIR/mm_srv log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln mm_srv log
+        exit 1
+    fi
+
+    popd
+
+    # remove old link
+    previous=`readlink /opt/mm_srv`
+    if [[ "$previous" != "" ]]; then
+        rm /opt/mm_srv
+    fi
+
+    # setup link
     ln -s /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to ln mm_srv
         exit 1
     fi
 
-    # create mm_srv dirs
-    mkdir -p $DATA_DIR/mm_srv $LOG_DIR/mm_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to mkdir mm_srv
-        exit 1
-    fi
-
-    cp -r /opt/mm_srv/data $DATA_DIR/mm_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy mm_srv data
-        exit 1
-    fi
-
-    cp -r /opt/mm_srv/log/* $LOG_DIR/mm_srv
-    if [[ $? -ne 0 ]]; then
-        echo Failed to copy mm_srv log
-        exit 1
-    fi
-
-    rm -rf /opt/mm_srv/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to rm mm_srv data
-        exit 1
-    fi
-
-    rm -rf /opt/mm_srv/log
-    if [[ $? -ne 0 ]]; then
-        echo Failed to rm mm_srv log
-        exit 1
-    fi
-
-    ln -s $DATA_DIR/mm_srv/data /opt/mm_srv/data
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln mm_srv data
-        exit 1
-    fi
-
-    ln -s $LOG_DIR/mm_srv /opt/mm_srv/log
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln mm_srv log
-        exit 1
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; then
+        echo diff $previous/releases/1/sys.config /opt/mm_srv/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/mm_srv/releases/1/sys.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
     fi
 
     # setup file system permissions
