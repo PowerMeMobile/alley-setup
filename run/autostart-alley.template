@@ -45,17 +45,6 @@ echo "SUCCESS"
 
 echo "Environment started"
 
-echo -e "\nStarting Funnel..."
-/opt/funnel/bin/funnel start
-sleep 10
-F=`/opt/funnel/bin/funnel ping`
-if [[ $F != 'pong' ]]; then
-    echo $F
-    echo "FAILED"
-    exit 1
-fi
-echo "SUCCESS"
-
 echo -e "\nStarting Kelly..."
 /opt/kelly/bin/kelly start
 sleep 10
@@ -67,12 +56,12 @@ if [[ $K != 'pong' ]]; then
 fi
 echo "SUCCESS"
 
-echo -e "\nStarting Just..."
-/opt/just/bin/just start
-sleep 20
-J=`/opt/just/bin/just ping`
-if [[ $J != 'pong' ]]; then
-    echo $J
+echo -e "\nStarting Funnel..."
+/opt/funnel/bin/funnel start
+sleep 10
+F=`/opt/funnel/bin/funnel ping`
+if [[ $F != 'pong' ]]; then
+    echo $F
     echo "FAILED"
     exit 1
 fi
@@ -101,6 +90,17 @@ if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     fi
     echo "SUCCESS"
 fi
+
+echo -e "\nStarting Just..."
+/opt/just/bin/just start
+sleep 20
+J=`/opt/just/bin/just ping`
+if [[ $J != 'pong' ]]; then
+    echo $J
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
 
 echo "Alley started"
 
