@@ -12,34 +12,9 @@ if [[ "$(id -un)" != "root" ]]; then
     exit 1
 fi
 
-function usage() {
-    echo "Usage: $SCRIPT_NAME <centos6 | fedora20 | rhel6 | debian7 | ubuntu10.04| ubuntu12.04 | arch>"
-}
-
-if [[ $# -ne 1 ]]; then
-    usage
-    exit 1
-fi
-
-export DISTRO="$1"
-
-case ${DISTRO} in
-    centos*|fedora*|rhel*)
-        export DISTRO_FAMILY="redhat"
-        ;;
-    debian*|ubuntu*)
-        export DISTRO_FAMILY="debian"
-        ;;
-    arch)
-        export DISTRO_FAMILY="arch"
-        ;;
-    *)
-        usage
-        exit 1
-        ;;
-esac
-
 touch $SCRIPT_DIR/../log/setup.log
+
+source $SCRIPT_DIR/phase-check-args
 
 source $SCRIPT_DIR/phase-install-deps-${DISTRO_FAMILY}
 source $SCRIPT_DIR/phase-setup-snmp
