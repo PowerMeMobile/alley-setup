@@ -11,21 +11,21 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    rm -rf $TMP_DIR/smppload
+    rm -rf ${TMP_DIR?}/smppload
 
-    git clone https://github.com/PowerMeMobile/smppload.git $TMP_DIR/smppload
+    git clone https://github.com/PowerMeMobile/smppload.git ${TMP_DIR?}/smppload
     if [[ $? -ne 0 ]]; then
         echo Failed to clone smppload
         exit 1
     fi
 
-    make -C $TMP_DIR/smppload escriptize
+    make -C ${TMP_DIR?}/smppload escriptize
     if [[ $? -ne 0 ]]; then
         echo Failed to build smppload
         exit 1
     fi
 
-    cp $TMP_DIR/smppload/smppload /opt/bin/
+    cp ${TMP_DIR?}/smppload/smppload /opt/bin/
     if [[ $? -ne 0 ]]; then
         echo Failed to copy smppload to /opt/bin
         exit 1

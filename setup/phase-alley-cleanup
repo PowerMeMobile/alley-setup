@@ -11,7 +11,7 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    rm -rf $TMP_DIR/*
+    rm -rf ${TMP_DIR?}/*
     if [[ $? -ne 0 ]]; then
         echo Failed to clear tmp dir
         exit 1

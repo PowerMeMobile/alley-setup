@@ -18,13 +18,13 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    wget --continue http://www.erlang.org/download/otp_src_$ERLANG_VER.tar.gz -P $TMP_DIR
+    wget --continue http://www.erlang.org/download/otp_src_$ERLANG_VER.tar.gz -P ${TMP_DIR?}
     if [[ $? -ne 0 ]]; then
         echo Failed to download otp src
         exit 1
     fi
 
-    tar -C $TMP_DIR -xzf $TMP_DIR/otp_src_$ERLANG_VER.tar.gz
+    tar -C ${TMP_DIR?} -xzf ${TMP_DIR?}/otp_src_$ERLANG_VER.tar.gz
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack otp src
         exit 1
@@ -32,9 +32,9 @@ if [[ $? -eq 1 ]]; then
 
     # R15B03-1 unpacks to otp_src_R15B03
     # R16B03-1 unpacks to otp_src_R16B03-1
-    pushd $TMP_DIR/otp_src_${ERLANG_VER%-*}*/
+    pushd ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}*/
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to $TMP_DIR/otp_src_${ERLANG_VER%-*}/
+        echo Failed to change dir to ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}/
         exit 1
     fi
 
@@ -63,7 +63,7 @@ if [[ $? -eq 1 ]]; then
     fi
     popd
 
-    rm -rf $TMP_DIR/otp_src_${ERLANG_VER%-*}*
+    rm -rf ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}*
     if [[ $? -ne 0 ]]; then
         echo Failed to remove otp src
         exit 1

@@ -13,15 +13,15 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    rm -rf $TMP_DIR/mm_srv
+    rm -rf ${TMP_DIR?}/mm_srv
 
-    git clone git@github.com:PowerMeMobile/mm_srv.git $TMP_DIR/mm_srv
+    git clone git@github.com:PowerMeMobile/mm_srv.git ${TMP_DIR?}/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to clone mm_srv
         exit 1
     fi
 
-    pushd $TMP_DIR/mm_srv
+    pushd ${TMP_DIR?}/mm_srv
 
     git checkout $MM_SRV_VER
     if [[ $? -ne 0 ]]; then
@@ -53,7 +53,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv $TMP_DIR/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move mm_srv to distr
         popd
