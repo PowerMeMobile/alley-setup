@@ -16,7 +16,7 @@ var mailbox_count = function() {
 
 var mailbox_remove = function() {
     tables = [
-        "db.mb_tablenel_receipts",
+        "db.mb_funnel_receipts",
         "db.mb_incoming_sms",
         "db.mb_k1api_input_id_to_sub_id",
         "db.mb_k1api_receipt_subs",
