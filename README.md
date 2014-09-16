@@ -29,7 +29,7 @@ Or make partial setup by running:
 Now login using the created user.
 
 <pre>
-# su - alley
+# su - bms
 </pre>
 
 <pre>
@@ -45,7 +45,7 @@ $ conf/http-conf.sh
 </pre>
 
 <pre>
-$ smppload -uuser -ppassword -s375296660002 -d375291112233 -c10 -D -v
+$ smppload -iuser -ppassword -s375296660002 -d375291112233 -c10 -D -v
 INFO:  Connected to 127.0.0.1:2775
 INFO:  Bound to Funnel
 INFO:  Stats:
