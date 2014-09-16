@@ -11,78 +11,25 @@ grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
-    ERLANG_DIR=/opt/otp-$ERLANG_VER
-    mkdir -p $ERLANG_DIR
+    kerl build $ERLANG_VER ${ERLANG_VER,,}
     if [[ $? -ne 0 ]]; then
-        echo Failed to create otp dir
+        echo Failed to build erlang
         exit 1
     fi
 
-    wget --continue http://www.erlang.org/download/otp_src_$ERLANG_VER.tar.gz -P ${TMP_DIR?}
+    kerl install ${ERLANG_VER,,}
     if [[ $? -ne 0 ]]; then
-        echo Failed to download otp src
+        echo Failed to install erlang
         exit 1
     fi
 
-    tar -C ${TMP_DIR?} -xzf ${TMP_DIR?}/otp_src_$ERLANG_VER.tar.gz
+    echo -e "\nsource /opt/${ERLANG_VER,,}/activate" >> /etc/profile
     if [[ $? -ne 0 ]]; then
-        echo Failed to unpack otp src
+        echo Failed to add erlang activate to profile
         exit 1
     fi
 
-    # R15B03-1 unpacks to otp_src_R15B03
-    # R16B03-1 unpacks to otp_src_R16B03-1
-    pushd ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}*/
-    if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}/
-        exit 1
-    fi
-
-    # skip building wx library as wxGTK-devel isn't available
-    touch lib/wx/SKIP
-
-    # setup erlang build environment
-    export $ERLANG_ENV
-
-    ./configure --prefix=$ERLANG_DIR
-    if [[ $? -ne 0 ]]; then
-        echo Failed to configure otp src
-        exit 1
-    fi
-
-    make
-    if [[ $? -ne 0 ]]; then
-        echo Failed to build otp
-        exit 1
-    fi
-
-    make install
-    if [[ $? -ne 0 ]]; then
-        echo Failed to install otp
-        exit 1
-    fi
-    popd
-
-    rm -rf ${TMP_DIR?}/otp_src_${ERLANG_VER%-*}*
-    if [[ $? -ne 0 ]]; then
-        echo Failed to remove otp src
-        exit 1
-    fi
-
-    # TODO: on upgrade the link may already exist
-    ln -s $ERLANG_DIR /opt/otp
-    if [[ $? -ne 0 ]]; then
-        echo Failed to ln otp
-        exit 1
-    fi
-
-    echo -e '\nexport PATH=/opt/otp/bin/:$PATH' >> /etc/profile
-    if [[ $? -ne 0 ]]; then
-        echo Failed to add otp path to profile
-        exit 1
-    fi
-
-    export PATH=/opt/otp/bin/:$PATH
+    source /opt/${ERLANG_VER,,}/activate
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"

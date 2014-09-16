@@ -16,11 +16,11 @@ touch $SCRIPT_DIR/../log/setup.log
 
 source $SCRIPT_DIR/phase-check-args
 
+source $SCRIPT_DIR/phase-make-dirs
 source $SCRIPT_DIR/phase-install-deps-${DISTRO_FAMILY}
 source $SCRIPT_DIR/phase-setup-snmp
 source $SCRIPT_DIR/phase-add-users-${DISTRO_FAMILY}
 source $SCRIPT_DIR/phase-setup-limits
-source $SCRIPT_DIR/phase-make-dirs
 source $SCRIPT_DIR/phase-setup-erlang
 source $SCRIPT_DIR/phase-setup-mongodb
 source $SCRIPT_DIR/phase-setup-rabbitmq
