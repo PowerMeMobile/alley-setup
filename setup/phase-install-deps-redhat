@@ -57,6 +57,7 @@ if [[ $? -eq 1 ]]; then
 
     # setup kerl (https://github.com/yrashk/kerl)
     cat > ~/.kerlrc <<EOF
+export $ERLANG_EVN
 KERL_CONFIGURE_OPTIONS="--without-wx"
 KERL_DEFAULT_INSTALL_DIR=/opt
 KERL_INSTALL_MANPAGES=1
