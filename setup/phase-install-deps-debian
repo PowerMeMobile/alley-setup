@@ -39,6 +39,23 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
+    # setup kerl (https://github.com/yrashk/kerl)
+    cat > ~/.kerlrc <<EOF
+export $ERLANG_ENV
+KERL_CONFIGURE_OPTIONS="--without-wx --without-javac --without-odbc"
+KERL_DEFAULT_INSTALL_DIR=/opt
+KERL_INSTALL_MANPAGES=1
+KERL_INSTALL_HTMLDOCS=1
+EOF
+    pushd /opt/bin
+    curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/kerl
+    chmod a+x kerl
+
+    pushd /etc/bash_completion.d
+    curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/bash_completion/kerl
+    popd
+    popd
+
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"
 else
