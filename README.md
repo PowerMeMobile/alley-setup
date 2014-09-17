@@ -6,7 +6,7 @@ First download and unzip.
 # cd /opt
 # wget -O master.zip https://github.com/PowerMeMobile/alley-setup/archive/master.zip
 # unzip master.zip
-# cd /opt/alley-setup-master
+# cd alley-setup-master
 </pre>
 
 Adjust setup/build configuration options in conf/setup.conf before going further.
