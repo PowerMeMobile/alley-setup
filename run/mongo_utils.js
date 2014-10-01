@@ -3,9 +3,9 @@ var mailbox_tables = [
     "db.mb_incoming_sms",
     "db.mb_pending_items",
     "db.mb_subscriptions",
-    "db.mb_k1api_input_id_to_sub_id",
-    "db.mb_k1api_receipt_subs",
-    "db.mb_k1api_receipts"
+    "db.mb_oneapi_input_id_to_sub_id",
+    "db.mb_oneapi_receipt_subs",
+    "db.mb_oneapi_receipts"
 ];
 
 var config_tables = [
