@@ -3,7 +3,6 @@ var mailbox_tables = [
     "db.mb_incoming_sms",
     "db.mb_pending_items",
     "db.mb_subscriptions",
-    "db.mb_oneapi_input_id_to_sub_id",
     "db.mb_oneapi_receipt_subs",
     "db.mb_oneapi_receipts"
 ];
