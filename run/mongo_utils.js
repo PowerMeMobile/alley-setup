@@ -1,10 +1,10 @@
 var mailbox_tables = [
-    "db.mb_funnel_receipts",
-    "db.mb_incoming_sms",
-    "db.mb_pending_items",
-    "db.mb_subscriptions",
-    "db.mb_oneapi_receipt_subs",
-    "db.mb_oneapi_receipts"
+    "db.funnel_receipts",
+    "db.incoming_sms",
+    "db.pending_items",
+    "db.subscriptions",
+    "db.oneapi_receipt_subs",
+    "db.oneapi_receipts"
 ];
 
 var config_tables = [
@@ -13,10 +13,13 @@ var config_tables = [
     "db.network_maps",
     "db.networks",
     "db.providers",
-    "db.mb_msisdns"
+    "db.msisdns"
 ];
 
 var mailbox_count = function() {
+    conn = new Mongo();
+    db = conn.getDB("mailbox");
+
     mailbox_tables.forEach(function(table) {
         var count = eval(table + ".count();");
         print(table + " " + count);
@@ -24,12 +27,18 @@ var mailbox_count = function() {
 };
 
 var mailbox_remove = function() {
+    conn = new Mongo();
+    db = conn.getDB("mailbox");
+
     mailbox_tables.forEach(function(table) {
         eval(table + ".remove({});");
     });
 };
 
 var config_count = function() {
+    conn = new Mongo();
+    db = conn.getDB("kelly");
+
     config_tables.forEach(function(table) {
         var count = eval(table + ".count();");
         print(table + " " + count);
@@ -37,6 +46,9 @@ var config_count = function() {
 };
 
 var config_remove = function() {
+    conn = new Mongo();
+    db = conn.getDB("kelly");
+
     config_tables.forEach(function(table) {
         eval(table + ".remove({});");
     });
