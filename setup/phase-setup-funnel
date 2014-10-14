@@ -12,7 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_FUNNEL == true ]]; then
-        source $SCRIPT_DIR/phase-build-funnel
+        $SCRIPT_DIR/phase-build-funnel
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/funnel_mini-$FUNNEL_VER-$DISTRO-x86_64.tar.gz

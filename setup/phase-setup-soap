@@ -12,7 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_SOAP == true ]]; then
-        source $SCRIPT_DIR/phase-build-soap
+        $SCRIPT_DIR/phase-build-soap
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/soap_srv-$SOAP_VER-$DISTRO-x86_64.tar.gz
