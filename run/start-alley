@@ -14,17 +14,6 @@ fi
 
 source $SCRIPT_DIR/../conf/setup.conf
 
-echo -e "\nStarting Kelly..."
-/opt/kelly/bin/kelly start
-sleep 10
-K=`/opt/kelly/bin/kelly ping`
-if [[ $K != 'pong' ]]; then
-    echo $K
-    echo "FAILED"
-    exit 1
-fi
-echo "SUCCESS"
-
 echo -e "\nStarting Funnel..."
 /opt/funnel/bin/funnel start
 sleep 10
@@ -59,6 +48,17 @@ if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     fi
     echo "SUCCESS"
 fi
+
+echo -e "\nStarting Kelly..."
+/opt/kelly/bin/kelly start
+sleep 10
+K=`/opt/kelly/bin/kelly ping`
+if [[ $K != 'pong' ]]; then
+    echo $K
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
 
 echo -e "\nStarting Just..."
 /opt/just/bin/just start
