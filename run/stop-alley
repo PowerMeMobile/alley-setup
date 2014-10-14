@@ -15,5 +15,6 @@ fi
 /opt/just/bin/just stop
 /opt/kelly/bin/kelly stop
 /opt/mm_srv/bin/mm_srv stop
+/opt/oneapi_srv/bin/oneapi_srv stop
 /opt/soap_srv/bin/soap_srv stop
 /opt/funnel/bin/funnel stop

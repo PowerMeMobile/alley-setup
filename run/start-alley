@@ -36,6 +36,17 @@ if [[ $S != 'pong' ]]; then
 fi
 echo "SUCCESS"
 
+echo -e "\nStarting OneAPI Srv..."
+/opt/oneapi_srv/bin/oneapi_srv start
+sleep 10
+O=`/opt/oneapi_srv/bin/oneapi_srv ping`
+if [[ $O != 'pong' ]]; then
+    echo $O
+    echo "FAILED"
+    exit 1
+fi
+echo "SUCCESS"
+
 if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     echo -e "\nStarting MM Srv..."
     /opt/mm_srv/bin/mm_srv start

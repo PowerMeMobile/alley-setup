@@ -8,6 +8,8 @@ screen -t "funnel" bash -c "cd /opt/funnel; echo ./bin/funnel start \| stop \| p
 
 screen -t "soap" bash -c "cd /opt/soap_srv; echo ./bin/soap_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
 
+screen -t "oneapi" bash -c "cd /opt/oneapi_srv; echo ./bin/oneapi_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
+
 screen -t "mm" bash -c "cd /opt/mm_srv; echo ./bin/mm_srv start \| stop \| ping \| console \| attach \| top; echo; exec bash"
 
 screen -t "kelly" bash -c "cd /opt/kelly; echo ./bin/kelly start \| stop \| ping \| console \| attach \| top; echo; exec bash"

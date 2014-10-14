@@ -1,0 +1,110 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    if [[ $BUILD_ONEAPI == true ]]; then
+        source $SCRIPT_DIR/phase-build-oneapi
+    fi
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/oneapi_srv-$ONEAPI_VER-$DISTRO-x86_64.tar.gz
+    if [[ $? -ne 0 ]]; then
+        echo Failed to unpack oneapi_srv
+        exit 1
+    fi
+
+    mkdir -p $DATA_DIR/oneapi_srv/data $LOG_DIR/oneapi_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to mkdir oneapi_srv
+        exit 1
+    fi
+
+    pushd /opt/oneapi_srv-$ONEAPI_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to change dir to /opt/oneapi_srv-$ONEAPI_VER-$DISTRO-x86_64
+        exit 1
+    fi
+
+    cp -r -u data/* $DATA_DIR/oneapi_srv/data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy oneapi_srv data
+        exit 1
+    fi
+
+    cp -r -u log/* $LOG_DIR/oneapi_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to copy oneapi_srv log
+        exit 1
+    fi
+
+    rm -rf data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm oneapi_srv data
+        exit 1
+    fi
+
+    rm -rf log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rm oneapi_srv log
+        exit 1
+    fi
+
+    ln -s $DATA_DIR/oneapi_srv/data data
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln oneapi_srv data
+        exit 1
+    fi
+
+    ln -s $LOG_DIR/oneapi_srv log
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln oneapi_srv log
+        exit 1
+    fi
+
+    popd
+
+    # remove old link
+    previous=`readlink /opt/oneapi_srv`
+    if [[ "$previous" != "" ]]; then
+        rm /opt/oneapi_srv
+    fi
+
+    # setup link
+    ln -s /opt/oneapi_srv-$ONEAPI_VER-$DISTRO-x86_64 /opt/oneapi_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln oneapi_srv
+        exit 1
+    fi
+
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; then
+        echo diff $previous/releases/1/sys.config /opt/oneapi_srv/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/oneapi_srv/releases/1/sys.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
+    fi
+
+    # setup file system permissions
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/oneapi_srv-$ONEAPI_VER-$DISTRO-x86_64 /opt/oneapi_srv $DATA_DIR/oneapi_srv $LOG_DIR/oneapi_srv
+    if [[ $? -ne 0 ]]; then
+        echo Failed to chown oneapi_srv
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
