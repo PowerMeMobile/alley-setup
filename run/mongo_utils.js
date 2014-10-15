@@ -16,8 +16,8 @@ var config_tables = [
     "db.msisdns"
 ];
 
-var mailbox_count = function() {
-    conn = new Mongo();
+var mailbox_count = function(server) {
+    conn = new Mongo(server);
     db = conn.getDB("mailbox");
 
     mailbox_tables.forEach(function(table) {
@@ -26,8 +26,8 @@ var mailbox_count = function() {
     });
 };
 
-var mailbox_remove = function() {
-    conn = new Mongo();
+var mailbox_remove = function(server) {
+    conn = new Mongo(server);
     db = conn.getDB("mailbox");
 
     mailbox_tables.forEach(function(table) {
@@ -35,8 +35,8 @@ var mailbox_remove = function() {
     });
 };
 
-var config_count = function() {
-    conn = new Mongo();
+var config_count = function(server) {
+    conn = new Mongo(server);
     db = conn.getDB("kelly");
 
     config_tables.forEach(function(table) {
@@ -45,8 +45,8 @@ var config_count = function() {
     });
 };
 
-var config_remove = function() {
-    conn = new Mongo();
+var config_remove = function(server) {
+    conn = new Mongo(server);
     db = conn.getDB("kelly");
 
     config_tables.forEach(function(table) {
@@ -60,6 +60,6 @@ funs["mailbox.remove"] = mailbox_remove;
 funs["config.count"]   = config_count;
 funs["config.remove"]  = config_remove;
 
-// command comes from outside.
+// server and command come from outside.
 var fun = funs[command];
-fun();
+fun(server);

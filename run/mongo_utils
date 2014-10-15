@@ -11,4 +11,4 @@ if [ $# -ne 1 ]; then
 fi
 
 command=$1
-mongo --quiet $HOST:$PORT --eval "var command=\"$command\"" $SCRIPT_DIR/mongo_utils.js
+mongo --quiet --eval "var server=\"$HOST:$PORT\"; var command=\"$command\"" $SCRIPT_DIR/mongo_utils.js
