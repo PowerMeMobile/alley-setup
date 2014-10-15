@@ -12,7 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_JUST == true ]]; then
-        $SCRIPT_DIR/phase-build-just
+        $SCRIPT_DIR/phase-build-just $* || exit $?
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/just_mini-$JUST_VER-$DISTRO-x86_64.tar.gz

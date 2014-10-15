@@ -12,7 +12,7 @@ if [[ $? -eq 1 ]]; then
     source $SCRIPT_DIR/../conf/setup.conf
 
     if [[ $BUILD_KELLY == true ]]; then
-        $SCRIPT_DIR/phase-build-kelly
+        $SCRIPT_DIR/phase-build-kelly $* || exit $?
     fi
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz
