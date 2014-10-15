@@ -21,9 +21,9 @@ F=`/opt/funnel/bin/funnel ping`
 if [[ $F != 'pong' ]]; then
     echo $F
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 echo -e "\nStarting SOAP Srv..."
 /opt/soap_srv/bin/soap_srv start
@@ -32,9 +32,9 @@ S=`/opt/soap_srv/bin/soap_srv ping`
 if [[ $S != 'pong' ]]; then
     echo $S
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 echo -e "\nStarting OneAPI Srv..."
 /opt/oneapi_srv/bin/oneapi_srv start
@@ -43,9 +43,9 @@ O=`/opt/oneapi_srv/bin/oneapi_srv ping`
 if [[ $O != 'pong' ]]; then
     echo $O
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     echo -e "\nStarting MM Srv..."
@@ -55,9 +55,9 @@ if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     if [[ $M != 'pong' ]]; then
         echo $M
         echo "FAILED"
-        exit 1
+    else
+        echo "SUCCESS"
     fi
-    echo "SUCCESS"
 fi
 
 echo -e "\nStarting Kelly..."
@@ -67,9 +67,9 @@ K=`/opt/kelly/bin/kelly ping`
 if [[ $K != 'pong' ]]; then
     echo $K
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 echo -e "\nStarting Just..."
 /opt/just/bin/just start
@@ -78,8 +78,6 @@ J=`/opt/just/bin/just ping`
 if [[ $J != 'pong' ]]; then
     echo $J
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
-
-echo "Alley started"

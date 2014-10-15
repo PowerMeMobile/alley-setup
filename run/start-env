@@ -23,9 +23,9 @@ ulimit -n $NOFILE -u $NPROC
 ps x | grep [m]ongod.*27017 &> /dev/null
 if [[ $? != 0 ]]; then
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 echo -e "\nStarting RabbitMQ..."
 rabbitmq-server -detached
@@ -33,14 +33,12 @@ sleep 30
 rabbitmqctl status
 if [ $? != 0 ]; then
     echo "FAILED"
-    exit 1
+else
+    echo "SUCCESS"
 fi
-echo "SUCCESS"
 
 echo -e "\nStarting SMPPSim..."
 pushd /opt/SMPPSim &> /dev/null
 ./startsmppsim.sh &> /dev/null &
 popd >/dev/null &> /dev/null
 echo "SUCCESS"
-
-echo "Environment started"
