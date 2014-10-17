@@ -45,7 +45,7 @@ $ conf/http-conf.sh
 </pre>
 
 <pre>
-$ smppload -iuser -ppassword -s375296660002 -d375296543210 -c10 -D -v
+$ smppload -iuser -ppassword -s375296660001 -d375296543210 -c10 -D -v
 INFO:  Connected to 127.0.0.1:2775
 INFO:  Bound to Funnel
 INFO:  Stats:
