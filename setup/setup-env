@@ -27,4 +27,5 @@ source $SCRIPT_DIR/phase-setup-rabbitmq
 source $SCRIPT_DIR/phase-setup-rabbitmq_management
 source $SCRIPT_DIR/phase-setup-smppsim
 source $SCRIPT_DIR/phase-setup-smppload
+source $SCRIPT_DIR/phase-setup-smppsink
 source $SCRIPT_DIR/phase-env-cleanup

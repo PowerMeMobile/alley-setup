@@ -43,6 +43,18 @@ pushd /opt/SMPPSim &> /dev/null
 popd >/dev/null &> /dev/null
 echo "SUCCESS"
 
+echo -e "\nStarting SMPPSink..."
+/opt/smppsink/bin/smppsink start
+sleep 10
+S=`/opt/smppsink/bin/smppsink ping`
+if [[ $S != 'pong' ]]; then
+    echo $S
+    echo "FAILED"
+else
+    echo "SUCCESS"
+fi
+
+
 echo "Environment started"
 
 echo -e "\nStarting Funnel..."

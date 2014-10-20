@@ -15,3 +15,4 @@ fi
 killall mongod
 rabbitmqctl stop
 kill `ps x | grep [s]mppsim | awk '{ print $1 }'`
+/opt/smppsink/bin/smppsink stop

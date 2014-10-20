@@ -1,0 +1,58 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    $SCRIPT_DIR/phase-build-smppsink $* || exit $?
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/smppsink-$SMPPSINK_VER-$DISTRO-x86_64.tar.gz
+    if [[ $? -ne 0 ]]; then
+        echo Failed to unpack smppsink
+        exit 1
+    fi
+
+    # remove old link
+    previous=`readlink /opt/smppsink`
+    if [[ "$previous" != "" ]]; then
+        rm /opt/smppsink
+    fi
+
+    # setup link
+    ln -s /opt/smppsink-$SMPPSINK_VER-$DISTRO-x86_64 /opt/smppsink
+    if [[ $? -ne 0 ]]; then
+        echo Failed to ln smppsink
+        exit 1
+    fi
+
+    # change app configuration warning
+    if [[ "$previous" != "" ]]; then
+        echo diff $previous/releases/1/sys.config /opt/smppsink/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/smppsink/releases/1/sys.config
+        if [[ $? -ne 0 ]]; then
+            cat << EOF
+WARNING!
+Don't forget to change application configuration.
+EOF
+        fi
+    fi
+
+    # setup file system permissions
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/smppsink-$SMPPSINK_VER-$DISTRO-x86_64 /opt/smppsink
+    if [[ $? -ne 0 ]]; then
+        echo Failed to chown smppsink
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi

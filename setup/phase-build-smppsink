@@ -1,0 +1,67 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+source $SCRIPT_DIR/phase-check-args
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    rm -rf ${TMP_DIR?}/smppsink
+
+    git clone https://github.com/PowerMeMobile/smppsink.git ${TMP_DIR?}/smppsink
+    if [[ $? -ne 0 ]]; then
+        echo Failed to clone smppsink
+        exit 1
+    fi
+
+    pushd ${TMP_DIR?}/smppsink
+
+    git checkout $SMPPSINK_VER
+    if [[ $? -ne 0 ]]; then
+        echo Failed to checkout smppsink $SMPPSINK_VER
+        popd
+        exit 1
+    fi
+
+    make
+    if [[ $? -ne 0 ]]; then
+        echo Failed to build smppsink
+        popd
+        exit 1
+    fi
+
+    mv rel/smppsink smppsink-$SMPPSINK_VER-$DISTRO-x86_64
+    if [[ $? -ne 0 ]]; then
+        echo Failed to rename smppsink release
+        popd
+        exit 1
+    fi
+
+    tar -czf smppsink-$SMPPSINK_VER-$DISTRO-x86_64.tar.gz smppsink-$SMPPSINK_VER-$DISTRO-x86_64/
+    if [[ $? -ne 0 ]]; then
+        echo Failed to pack smppsink
+        popd
+        exit 1
+    fi
+
+    popd
+
+    mv ${TMP_DIR?}/smppsink/smppsink-$SMPPSINK_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    if [[ $? -ne 0 ]]; then
+        echo Failed to move smppsink to distr
+        popd
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
