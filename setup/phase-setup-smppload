@@ -19,19 +19,32 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    make -C ${TMP_DIR?}/smppload escriptize
+    pushd ${TMP_DIR?}/smppload
+
+    git checkout $SMPPLOAD_VER
     if [[ $? -ne 0 ]]; then
-        echo Failed to build smppload
+        echo Failed to checkout smppload $SMPPLOAD_VER
+        popd
         exit 1
     fi
 
-    cp ${TMP_DIR?}/smppload/smppload /opt/bin/
+    make escriptize
+    if [[ $? -ne 0 ]]; then
+        echo Failed to build smppload
+        popd
+        exit 1
+    fi
+
+    cp smppload /opt/bin/
     if [[ $? -ne 0 ]]; then
         echo Failed to copy smppload to /opt/bin
+        popd
         exit 1
     fi
 
     chmod +x /opt/bin/smppload
+
+    popd
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"
