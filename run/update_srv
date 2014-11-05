@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ $# != 3 ]]; then
+   echo "usage: update_srv <srv_name> <from_vsn> <to_vsn>"
+   exit 1
+fi
+
+srv_name=$1
+from_vsn=$2
+to_vsn=$3
+
+# check if exists
+tar xfz ${srv_name}*-${to_vsn}-centos6-x86_64.tar.gz
+
+cd ${srv_name}*-${to_vsn}-centos6-x86_64
+
+rm -rf data log
+ln -s /mnt/data/${srv_name}/data data
+ln -s /var/log/${srv_name} log
+cd ..
+chown -R bms:bms ${srv_name}*-${to_vsn}-centos6-x86_64
+rm ${srv_name}
+ln -s ${srv_name}*-${to_vsn}-centos6-x86_64 ${srv_name}

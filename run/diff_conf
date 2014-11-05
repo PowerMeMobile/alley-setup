@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $# != 3 ]]; then
+   echo "usage: diff_conf <srv_name> <from_vsn> <to_vsn>"
+   exit 1
+fi
+
+srv_name=$1
+from_vsn=$2
+to_vsn=$3
+
+echo "sys.config"
+diff ${srv_name}*-${to_vsn}-centos6-x86_64/releases/1/sys.config ${srv_name}*-${from_vsn}-centos6-x86_64/releases/1/sys.config
+
+echo "vm.args"
+diff ${srv_name}*-${to_vsn}-centos6-x86_64/releases/1/vm.args ${srv_name}*-${from_vsn}-centos6-x86_64/releases/1/vm.args
