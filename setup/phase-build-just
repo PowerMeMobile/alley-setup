@@ -15,7 +15,7 @@ if [[ $? -eq 1 ]]; then
 
     rm -rf ${TMP_DIR?}/just_mini
 
-    git clone https://github.com/PowerMeMobile/just_mini_rel.git ${TMP_DIR?}/just_mini
+    git clone https://github.com/PowerMeMobile/just_mini.git ${TMP_DIR?}/just_mini
     if [[ $? -ne 0 ]]; then
         echo Failed to clone just
         exit 1
@@ -37,7 +37,7 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mv just_mini just_mini-$JUST_VER-$DISTRO-x86_64
+    mv rel/just_mini just_mini-$JUST_VER-$DISTRO-x86_64
     if [[ $? -ne 0 ]]; then
         echo Failed to rename just release
         popd
