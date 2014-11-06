@@ -56,7 +56,6 @@ if [[ $? -eq 1 ]]; then
     mv ${TMP_DIR?}/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move mm_srv to distr
-        popd
         exit 1
     fi
 

@@ -56,7 +56,6 @@ if [[ $? -eq 1 ]]; then
     mv ${TMP_DIR?}/smppsink/smppsink-$SMPPSINK_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move smppsink to distr
-        popd
         exit 1
     fi
 
