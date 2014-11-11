@@ -31,7 +31,8 @@ if [[ $? -eq 1 ]]; then
         sysstat \
         iotop \
         wget \
-        curl
+        curl \
+        tar
 
     if [[ $? -ne 0 ]]; then
         echo Failed to install deps

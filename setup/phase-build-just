@@ -37,14 +37,16 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mv rel/just_mini just_mini-$JUST_VER-$DISTRO-x86_64
+    PROJ_NAME=just-mini_${JUST_VER}_${DISTRO}_$(uname -m)
+
+    mv rel/just_mini ${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename just release
         popd
         exit 1
     fi
 
-    tar -czf just_mini-$JUST_VER-$DISTRO-x86_64.tar.gz just_mini-$JUST_VER-$DISTRO-x86_64/
+    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack just
         popd
@@ -53,7 +55,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/just_mini/just_mini-$JUST_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/just_mini/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move just to distr
         exit 1

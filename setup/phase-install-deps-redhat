@@ -13,7 +13,7 @@ if [[ $? -eq 1 ]]; then
     rpm -q epel-release >/dev/null 2>&1 || rpm -q fedora-release >/dev/null 2>&1
     if [[ $? -ne 0 ]]; then
         # install EPEL
-        yum -y install http://mirror.datacenter.by/pub/fedoraproject.org/epel/6/x86_64/epel-release-6-8.noarch.rpm
+        yum -y install http://mirror.datacenter.by/pub/fedoraproject.org/epel/6/$(uname -m)/epel-release-6-8.noarch.rpm
         if [[ $? -ne 0 ]]; then
             echo Failed to setup EPEL repository
             exit 1
@@ -47,7 +47,8 @@ if [[ $? -eq 1 ]]; then
         sysstat \
         iotop \
         wget \
-        curl
+        curl \
+        tar
 
     if [[ $? -ne 0 ]]; then
         echo Failed to install deps

@@ -37,14 +37,16 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mv rel/kelly kelly-$KELLY_VER-$DISTRO-x86_64
+    PROJ_NAME=kelly_${KELLY_VER}_${DISTRO}_$(uname -m)
+
+    mv rel/kelly ${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename kelly release
         popd
         exit 1
     fi
 
-    tar -czf kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz kelly-$KELLY_VER-$DISTRO-x86_64/
+    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack kelly
         popd
@@ -53,7 +55,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/kelly/kelly-$KELLY_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/kelly/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move kelly to distr
         exit 1

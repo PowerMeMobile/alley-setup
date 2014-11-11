@@ -13,21 +13,23 @@ if [[ $? -eq 1 ]]; then
 
     pushd /opt
 
-    curl -O -C - http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-$MONGODB_VER.tgz
+    MONGODB_NAME=mongodb-linux-$(uname -m)-${MONGODB_VER}
+
+    curl -O -C - http://fastdl.mongodb.org/linux/${MONGODB_NAME}.tgz
     if [[ $? -ne 0 ]]; then
         echo Failed to download mongodb
         popd
         exit 1
     fi
 
-    tar -xzf mongodb-linux-x86_64-$MONGODB_VER.tgz
+    tar -xzf ${MONGODB_NAME}.tgz
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack mongodb
         popd
         exit 1
     fi
 
-    rm -f mongodb-linux-x86_64-$MONGODB_VER.tgz
+    rm -f ${MONGODB_NAME}.tgz
     if [[ $? -ne 0 ]]; then
         echo Failed to rm mongodb tgz
         popd
@@ -35,7 +37,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # TODO: on upgrade the link may already exist
-    ln -s mongodb-linux-x86_64-$MONGODB_VER mongodb
+    ln -s ${MONGODB_NAME} mongodb
     if [[ $? -ne 0 ]]; then
         echo Failed to ln mongodb
         popd
@@ -59,7 +61,7 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/mongodb-linux-x86_64-$MONGODB_VER /opt/mongodb $DB_DIR $LOG_DIR/mongodb
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${MONGODB_NAME} /opt/mongodb $DB_DIR $LOG_DIR/mongodb
     if [[ $? -ne 0 ]]; then
         echo Failed to chown mongodb
         exit 1

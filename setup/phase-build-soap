@@ -37,14 +37,16 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mv rel/soap_srv soap_srv-$SOAP_VER-$DISTRO-x86_64
+    PROJ_NAME=soap-srv_${SOAP_VER}_${DISTRO}_$(uname -m)
+
+    mv rel/soap_srv ${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename soap_srv release
         popd
         exit 1
     fi
 
-    tar -czf soap_srv-$SOAP_VER-$DISTRO-x86_64.tar.gz soap_srv-$SOAP_VER-$DISTRO-x86_64/
+    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack soap_srv
         popd
@@ -53,7 +55,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/soap_srv/soap_srv-$SOAP_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/soap_srv/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move soap_srv to distr
         exit 1

@@ -37,14 +37,16 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    mv rel/mm_srv mm_srv-$MM_VER-$DISTRO-x86_64
+    PROJ_NAME=mm-srv_${MM_VER}_${DISTRO}_$(uname -m)
+
+    mv rel/mm_srv ${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename mm_srv release
         popd
         exit 1
     fi
 
-    tar -czf mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz mm_srv-$MM_VER-$DISTRO-x86_64/
+    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack mm_srv
         popd
@@ -53,7 +55,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/mm_srv/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/mm_srv/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move mm_srv to distr
         exit 1

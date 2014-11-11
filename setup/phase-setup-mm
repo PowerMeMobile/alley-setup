@@ -15,7 +15,9 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-mm $* || exit $?
     fi
 
-    tar -C /opt -xzf $SCRIPT_DIR/../distr/mm_srv-$MM_VER-$DISTRO-x86_64.tar.gz
+    PROJ_NAME=mm-srv_${MM_VER}_${DISTRO}_$(uname -m)
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/${PROJ_NAME}.tar.gz
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack mm_srv
         exit 1
@@ -27,9 +29,9 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    pushd /opt/mm_srv-$MM_VER-$DISTRO-x86_64
+    pushd /opt/${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to /opt/mm_srv-$MM_VER-$DISTRO-x86_64
+        echo Failed to change dir to /opt/${PROJ_NAME}
         exit 1
     fi
 
@@ -78,7 +80,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv
+    ln -s /opt/${PROJ_NAME} /opt/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to ln mm_srv
         exit 1
@@ -97,7 +99,7 @@ EOF
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/mm_srv-$MM_VER-$DISTRO-x86_64 /opt/mm_srv $DATA_DIR/mm_srv $LOG_DIR/mm_srv
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/mm_srv $DATA_DIR/mm_srv $LOG_DIR/mm_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to chown mm_srv
         exit 1

@@ -24,7 +24,8 @@ if [[ $? -eq 1 ]]; then
         iotop \
         wget \
         curl \
-        sudo
+        sudo \
+        tar
 
     if [[ $? -ne 0 ]]; then
         echo Failed to install deps
@@ -52,7 +53,7 @@ EOF
     tar -xzf tokyocabinet.tar.gz
     pushd tokyocabinet
     makepkg -s --asroot
-    pacman -U --noconfirm tokyocabinet-1.4.48-1-x86_64.pkg.tar.xz
+    pacman -U --noconfirm tokyocabinet-1.4.48-1-$(uname -m).pkg.tar.xz
     ret=$?
     popd
     rm -rf tokyocabinet*

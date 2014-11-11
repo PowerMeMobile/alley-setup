@@ -15,7 +15,9 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-just $* || exit $?
     fi
 
-    tar -C /opt -xzf $SCRIPT_DIR/../distr/just_mini-$JUST_VER-$DISTRO-x86_64.tar.gz
+    PROJ_NAME=just-mini_${JUST_VER}_${DISTRO}_$(uname -m)
+
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/${PROJ_NAME}.tar.gz
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack just
         exit 1
@@ -27,9 +29,9 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    pushd /opt/just_mini-$JUST_VER-$DISTRO-x86_64
+    pushd /opt/${PROJ_NAME}
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to /opt/just_mini-$JUST_VER-$DISTRO-x86_64
+        echo Failed to change dir to /opt/${PROJ_NAME}
         exit 1
     fi
 
@@ -78,7 +80,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just
+    ln -s /opt/${PROJ_NAME} /opt/just
     if [[ $? -ne 0 ]]; then
         echo Failed to ln just
         exit 1
@@ -86,8 +88,8 @@ if [[ $? -eq 1 ]]; then
 
     # change app configuration warning
     if [[ "$previous" != "" ]]; then
-        echo diff $previous/etc/app.config /opt/just/etc/app.config
-        diff $previous/etc/app.config /opt/just/etc/app.config
+        echo diff $previous/releases/1/sys.config /opt/just/releases/1/sys.config
+        diff $previous/releases/1/sys.config /opt/just/releases/1/sys.config
         if [[ $? -ne 0 ]]; then
             cat << EOF
 WARNING!
@@ -97,14 +99,14 @@ EOF
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just $DATA_DIR/just $LOG_DIR/just
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/just $DATA_DIR/just $LOG_DIR/just
     if [[ $? -ne 0 ]]; then
         echo Failed to chown just
         exit 1
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/just_mini-$JUST_VER-$DISTRO-x86_64 /opt/just $DATA_DIR/just $LOG_DIR/just
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/just $DATA_DIR/just $LOG_DIR/just
     if [[ $? -ne 0 ]]; then
         echo Failed to chown just
         exit 1
