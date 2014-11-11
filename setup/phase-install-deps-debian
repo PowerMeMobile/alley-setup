@@ -19,7 +19,6 @@ if [[ $? -eq 1 ]]; then
         build-essential \
         libssl-dev \
         libncurses5-dev \
-        unixodbc-dev \
         default-jdk \
         fop \
         xsltproc \

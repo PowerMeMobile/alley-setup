@@ -13,7 +13,6 @@ if [[ $? -eq 1 ]]; then
         base-devel  \
         openssl \
         ncurses \
-        unixodbc \
         jdk7-openjdk \
         fop \
         libxslt \

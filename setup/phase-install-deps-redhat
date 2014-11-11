@@ -33,7 +33,6 @@ if [[ $? -eq 1 ]]; then
         gcc-c++ \
         openssl-devel \
         ncurses-devel \
-        unixODBC-devel \
         java-1.7.0-openjdk-devel \
         fop \
         libxslt \
