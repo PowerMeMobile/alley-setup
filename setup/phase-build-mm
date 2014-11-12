@@ -37,8 +37,8 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    DIR_NAME=mm-srv-${MM_VER}
-    TAR_NAME=mm-srv_${MM_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=mm_srv-${MM_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     mv rel/mm_srv ${DIR_NAME}
     if [[ $? -ne 0 ]]; then

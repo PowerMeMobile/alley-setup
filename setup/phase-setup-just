@@ -15,8 +15,8 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-just $* || exit $?
     fi
 
-    DIR_NAME=just-mini-${JUST_VER}
-    TAR_NAME=just-mini_${JUST_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=just_mini-${JUST_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then

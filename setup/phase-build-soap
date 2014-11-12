@@ -37,8 +37,8 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    DIR_NAME=soap-srv-${SOAP_VER}
-    TAR_NAME=soap-srv_${SOAP_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=soap_srv-${SOAP_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     mv rel/soap_srv ${DIR_NAME}
     if [[ $? -ne 0 ]]; then

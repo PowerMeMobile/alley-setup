@@ -38,7 +38,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     DIR_NAME=kelly-${KELLY_VER}
-    TAR_NAME=kelly_${KELLY_VER}_${DISTRO}_$(uname -m).tar.gz
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     mv rel/kelly ${DIR_NAME}
     if [[ $? -ne 0 ]]; then

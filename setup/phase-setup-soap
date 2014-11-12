@@ -15,8 +15,8 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-soap $* || exit $?
     fi
 
-    DIR_NAME=soap-srv-${SOAP_VER}
-    TAR_NAME=soap-srv_${SOAP_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=soap_srv-${SOAP_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then

@@ -15,8 +15,8 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-funnel $* || exit $?
     fi
 
-    DIR_NAME=funnel-mini-${FUNNEL_VER}
-    TAR_NAME=funnel-mini_${FUNNEL_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=funnel_mini-${FUNNEL_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then

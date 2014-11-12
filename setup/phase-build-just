@@ -37,8 +37,8 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    DIR_NAME=just-mini-${JUST_VER}
-    TAR_NAME=just-mini_${JUST_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=just_mini-${JUST_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     mv rel/just_mini ${DIR_NAME}
     if [[ $? -ne 0 ]]; then

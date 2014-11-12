@@ -37,8 +37,8 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    DIR_NAME=oneapi-srv-${ONEAPI_VER}
-    TAR_NAME=oneapi-srv_${ONEAPI_VER}_${DISTRO}_$(uname -m).tar.gz
+    DIR_NAME=oneapi_srv-${ONEAPI_VER}
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     mv rel/oneapi_srv ${DIR_NAME}
     if [[ $? -ne 0 ]]; then

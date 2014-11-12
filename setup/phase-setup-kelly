@@ -16,7 +16,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     DIR_NAME=kelly-${KELLY_VER}
-    TAR_NAME=kelly_${KELLY_VER}_${DISTRO}_$(uname -m).tar.gz
+    TAR_NAME=${DIR_NAME}-${DISTRO}.$(uname -m).tar.gz
 
     tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then
