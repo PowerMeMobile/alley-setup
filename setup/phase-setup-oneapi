@@ -15,9 +15,10 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-oneapi $* || exit $?
     fi
 
-    PROJ_NAME=oneapi-srv_${ONEAPI_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=oneapi-srv-${ONEAPI_VER}
+    TAR_NAME=oneapi-srv_${ONEAPI_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    tar -C /opt -xzf $SCRIPT_DIR/../distr/${PROJ_NAME}.tar.gz
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack oneapi_srv
         exit 1
@@ -29,9 +30,9 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    pushd /opt/${PROJ_NAME}
+    pushd /opt/${DIR_NAME}
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to /opt/${PROJ_NAME}
+        echo Failed to change dir to /opt/${DIR_NAME}
         exit 1
     fi
 
@@ -80,7 +81,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/${PROJ_NAME} /opt/oneapi_srv
+    ln -s /opt/${DIR_NAME} /opt/oneapi_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to ln oneapi_srv
         exit 1
@@ -99,7 +100,7 @@ EOF
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/oneapi_srv $DATA_DIR/oneapi_srv $LOG_DIR/oneapi_srv
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${DIR_NAME} /opt/oneapi_srv $DATA_DIR/oneapi_srv $LOG_DIR/oneapi_srv
     if [[ $? -ne 0 ]]; then
         echo Failed to chown oneapi_srv
         exit 1

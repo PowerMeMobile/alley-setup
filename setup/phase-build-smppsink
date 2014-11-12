@@ -37,16 +37,17 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    PROJ_NAME=smppsink_${SMPPSINK_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=smppsink-${SMPPSINK_VER}
+    TAR_NAME=smppsink_${SMPPSINK_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    mv rel/smppsink ${PROJ_NAME}
+    mv rel/smppsink ${DIR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename smppsink release
         popd
         exit 1
     fi
 
-    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
+    tar -czf ${TAR_NAME} ${DIR_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack smppsink
         popd
@@ -55,7 +56,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/smppsink/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/smppsink/${TAR_NAME} $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move smppsink to distr
         exit 1

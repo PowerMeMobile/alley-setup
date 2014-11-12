@@ -37,16 +37,17 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    PROJ_NAME=funnel-mini_${FUNNEL_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=funnel-mini-${FUNNEL_VER}
+    TAR_NAME=funnel-mini_${FUNNEL_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    mv rel/funnel_mini ${PROJ_NAME}
+    mv rel/funnel_mini ${DIR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename funnel release
         popd
         exit 1
     fi
 
-    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
+    tar -czf ${TAR_NAME} ${DIR_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack funnel
         popd
@@ -55,7 +56,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/funnel_mini/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/funnel_mini/${TAR_NAME} $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move funnel to distr
         exit 1

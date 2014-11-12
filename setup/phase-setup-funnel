@@ -15,9 +15,10 @@ if [[ $? -eq 1 ]]; then
         $SCRIPT_DIR/phase-build-funnel $* || exit $?
     fi
 
-    PROJ_NAME=funnel-mini_${FUNNEL_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=funnel-mini-${FUNNEL_VER}
+    TAR_NAME=funnel-mini_${FUNNEL_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    tar -C /opt -xzf $SCRIPT_DIR/../distr/${PROJ_NAME}.tar.gz
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack funnel
         exit 1
@@ -29,9 +30,9 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    pushd /opt/${PROJ_NAME}
+    pushd /opt/${DIR_NAME}
     if [[ $? -ne 0 ]]; then
-        echo Failed to change dir to /opt/${PROJ_NAME}
+        echo Failed to change dir to /opt/${DIR_NAME}
         exit 1
     fi
 
@@ -80,7 +81,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/${PROJ_NAME} /opt/funnel
+    ln -s /opt/${DIR_NAME} /opt/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to ln funnel
         exit 1
@@ -99,7 +100,7 @@ EOF
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/funnel $DATA_DIR/funnel $LOG_DIR/funnel
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${DIR_NAME} /opt/funnel $DATA_DIR/funnel $LOG_DIR/funnel
     if [[ $? -ne 0 ]]; then
         echo Failed to chown funnel
         exit 1

@@ -1,23 +1,28 @@
 #!/bin/bash
 
 if [[ $# != 3 ]]; then
-   echo "usage: update_srv <srv_name> <from_vsn> <to_vsn>"
+   echo "Usage: update_srv SRV_NAME FROM_VER TO_VER"
    exit 1
 fi
 
 srv_name=$1
-from_vsn=$2
-to_vsn=$3
+from_ver=$2
+to_ver=$3
 
-# check if exists
-tar xfz ${srv_name}*-${to_vsn}-centos6-x86_64.tar.gz
+tar_name=${srv_name}*_${to_ver}_centos6_x86_64.tar.gz
+if [[ -e ${tar_name} ]]; then
+    tar xfz ${tar_name}
+else
+    echo "${tar_name} not found"
+    exit 1
+fi
 
-cd ${srv_name}*-${to_vsn}-centos6-x86_64
-
+pushd ${srv_name}*-${to_ver}
 rm -rf data log
 ln -s /mnt/data/${srv_name}/data data
 ln -s /var/log/${srv_name} log
-cd ..
-chown -R bms:bms ${srv_name}*-${to_vsn}-centos6-x86_64
+popd
+
+chown -R bms:bms ${srv_name}*-${to_ver}
 rm ${srv_name}
-ln -s ${srv_name}*-${to_vsn}-centos6-x86_64 ${srv_name}
+ln -s ${srv_name}*-${to_ver} ${srv_name}

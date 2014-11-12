@@ -13,9 +13,10 @@ if [[ $? -eq 1 ]]; then
 
     $SCRIPT_DIR/phase-build-smppsink $* || exit $?
 
-    PROJ_NAME=smppsink_${SMPPSINK_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=smppsink-${SMPPSINK_VER}
+    TAR_NAME=smppsink_${SMPPSINK_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    tar -C /opt -xzf $SCRIPT_DIR/../distr/${PROJ_NAME}.tar.gz
+    tar -C /opt -xzf $SCRIPT_DIR/../distr/${TAR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to unpack smppsink
         exit 1
@@ -28,7 +29,7 @@ if [[ $? -eq 1 ]]; then
     fi
 
     # setup link
-    ln -s /opt/${PROJ_NAME} /opt/smppsink
+    ln -s /opt/${DIR_NAME} /opt/smppsink
     if [[ $? -ne 0 ]]; then
         echo Failed to ln smppsink
         exit 1
@@ -47,7 +48,7 @@ EOF
     fi
 
     # setup file system permissions
-    chown $ALLEY_USER:$ALLEY_USER -R /opt/${PROJ_NAME} /opt/smppsink
+    chown $ALLEY_USER:$ALLEY_USER -R /opt/${DIR_NAME} /opt/smppsink
     if [[ $? -ne 0 ]]; then
         echo Failed to chown smppsink
         exit 1

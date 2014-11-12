@@ -37,16 +37,17 @@ if [[ $? -eq 1 ]]; then
         exit 1
     fi
 
-    PROJ_NAME=oneapi-srv_${ONEAPI_VER}_${DISTRO}_$(uname -m)
+    DIR_NAME=oneapi-srv-${ONEAPI_VER}
+    TAR_NAME=oneapi-srv_${ONEAPI_VER}_${DISTRO}_$(uname -m).tar.gz
 
-    mv rel/oneapi_srv ${PROJ_NAME}
+    mv rel/oneapi_srv ${DIR_NAME}
     if [[ $? -ne 0 ]]; then
         echo Failed to rename oneapi_srv release
         popd
         exit 1
     fi
 
-    tar -czf ${PROJ_NAME}.tar.gz ${PROJ_NAME}/
+    tar -czf ${TAR_NAME} ${DIR_NAME}/
     if [[ $? -ne 0 ]]; then
         echo Failed to pack oneapi_srv
         popd
@@ -55,7 +56,7 @@ if [[ $? -eq 1 ]]; then
 
     popd
 
-    mv ${TMP_DIR?}/oneapi_srv/${PROJ_NAME}.tar.gz $SCRIPT_DIR/../distr/
+    mv ${TMP_DIR?}/oneapi_srv/${TAR_NAME} $SCRIPT_DIR/../distr/
     if [[ $? -ne 0 ]]; then
         echo Failed to move oneapi_srv to distr
         exit 1
