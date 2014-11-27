@@ -18,7 +18,7 @@ if [[ $? -eq 1 ]]; then
                 yum -y install http://mirror.datacenter.by/pub/fedoraproject.org/epel/6/$(uname -m)/epel-release-6-8.noarch.rpm
                 ;;
             centos5)
-                yum -y install http://mirror.datacenter.by/pub/fedoraproject.org/epel/5/$(uname -m)/epel-release-5-4.noarch.rpm
+                rpm -i http://mirror.datacenter.by/pub/fedoraproject.org/epel/5/$(uname -m)/epel-release-5-4.noarch.rpm
                 ;;
             *)
                 echo Unsupported distro: ${DISTRO}
