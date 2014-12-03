@@ -7,6 +7,8 @@ echo "#"
 echo "# $SCRIPT_NAME"
 echo "#"
 
+source $SCRIPT_DIR/phase-check-args
+
 grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
 if [[ $? -eq 1 ]]; then
     # check if EPEL is already installed or this is fedora
