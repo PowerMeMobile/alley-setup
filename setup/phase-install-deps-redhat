@@ -78,11 +78,14 @@ EOF
     pushd /opt/bin
     curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/kerl
     chmod a+x kerl
+    popd
 
     pushd /etc/bash_completion.d
-    curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/bash_completion/kerl
-    popd
-    popd
+    if [[ $? -eq 0 ]]; then
+        ## perform only if there's /etc/bash_completion.d
+        curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/bash_completion/kerl
+        popd
+    fi
 
     echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
     echo "DONE"
