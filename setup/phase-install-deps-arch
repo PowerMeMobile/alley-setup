@@ -27,7 +27,8 @@ if [[ $? -eq 1 ]]; then
         wget \
         curl \
         sudo \
-        tar
+        tar \
+        emacs
 
     if [[ $? -ne 0 ]]; then
         echo Failed to install deps

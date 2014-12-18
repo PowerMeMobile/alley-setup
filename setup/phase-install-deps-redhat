@@ -45,7 +45,7 @@ if [[ $? -eq 1 ]]; then
         gcc-c++ \
         openssl-devel \
         ncurses-devel \
-        java-1.7.0-openjdk-devel \
+        java-1.7.0-openjdk \
         fop \
         libxslt \
         git \
@@ -60,7 +60,8 @@ if [[ $? -eq 1 ]]; then
         iotop \
         wget \
         curl \
-        tar
+        tar \
+        emacs
 
     if [[ $? -ne 0 ]]; then
         echo Failed to install deps
