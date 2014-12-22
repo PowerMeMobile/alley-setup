@@ -1,0 +1,61 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: supervisord
+# Required-Start: $local_fs $remote_fs $networking
+# Required-Stop: $local_fs $remote_fs $networking
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Starts supervisord - see http://supervisord.org
+# Description: Starts and stops supervisord as needed - see http://supervisord.org
+### END INIT INFO
+
+# Source init functions
+. /etc/rc.d/init.d/functions
+
+prog="supervisord"
+
+prefix="/usr/"
+exec_prefix="${prefix}"
+prog_bin="${exec_prefix}/bin/supervisord"
+CONFFILE="/etc/supervisord.conf"
+PIDFILE="/var/run/$prog.pid"
+
+start()
+{
+    echo -n $"Starting $prog: "
+    daemon $prog_bin -c $CONFFILE --pidfile $PIDFILE
+    [ -f $PIDFILE ] && success $"$prog startup" || failure $"$prog startup"
+    echo
+}
+
+stop()
+{
+    echo -n $"Shutting down $prog: "
+    [ -f $PIDFILE ] && killproc $prog || success $"$prog shutdown"
+    echo
+}
+
+case "$1" in
+
+ start)
+   start
+ ;;
+
+ stop)
+   stop
+ ;;
+
+ status)
+       status $prog
+ ;;
+
+ restart)
+   stop
+   start
+ ;;
+
+ *)
+   echo "Usage: $0 {start|stop|restart|status}"
+ ;;
+
+esac

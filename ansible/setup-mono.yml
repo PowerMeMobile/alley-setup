@@ -1,0 +1,35 @@
+---
+- hosts: machine
+  sudo: yes
+  tasks:
+  - name: Install libselinux-python
+    yum: >
+      name=libselinux-python
+      state=present
+
+  - name: Create 'bms' user
+    user: name=bms
+
+  - name: Add sus.dev1team.net IP to /etc/hosts
+    lineinfile: >
+      dest=/etc/hosts
+      line='178.124.154.132 sus.dev1team.net'
+
+  - name: Create /etc/yum.repos.d/pmm-base.repo
+    copy: >
+      src=files/etc/yum.repos.d/pmm-base.repo
+      dest=/etc/yum.repos.d/pmm-base.repo
+      mode=644
+
+  - name: Install EPEL
+    yum: name=epel-release state=present
+
+  - name: Install Mono
+    yum: name=libgdiplus state=present
+    yum: name=libgdiplus-devel state=present
+    yum: name=pmm-mono-3.2.8-rel_VisualBasicPatch_20141022.x86_64
+
+  - name: Add Mono env to /etc/profile
+    lineinfile: >
+      dest=/etc/profile
+      line='source /opt/mono-3.2.8/env.rc'

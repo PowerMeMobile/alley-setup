@@ -1,0 +1,1 @@
+machine ansible_ssh_host=10.10.0.152 ansible_ssh_user=root

@@ -1,0 +1,5 @@
+[pmm-base]
+name=PMM Base repository.
+enabled=1
+gpgcheck=0
+baseurl=http://sus.dev1team.net/rawshaun-sus/pmm-base/base/
