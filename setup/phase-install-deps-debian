@@ -47,8 +47,8 @@ if [[ $? -eq 1 ]]; then
 export $ERLANG_ENV
 KERL_CONFIGURE_OPTIONS="--without-wx --without-javac --without-odbc"
 KERL_DEFAULT_INSTALL_DIR=/opt
-KERL_INSTALL_MANPAGES=1
-KERL_INSTALL_HTMLDOCS=1
+KERL_INSTALL_MANPAGES=0
+KERL_INSTALL_HTMLDOCS=0
 EOF
     pushd /opt/bin
     curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/kerl
