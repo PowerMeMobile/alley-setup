@@ -57,37 +57,43 @@ fi
 
 echo "Environment started"
 
-echo -e "\nStarting Funnel..."
-/opt/funnel/bin/funnel start
-sleep 10
-F=`/opt/funnel/bin/funnel ping`
-if [[ $F != 'pong' ]]; then
-    echo $F
-    echo "FAILED"
-else
-    echo "SUCCESS"
+if [[ -x /opt/funnel/bin/funnel ]]; then
+    echo -e "\nStarting Funnel..."
+    /opt/funnel/bin/funnel start
+    sleep 10
+    F=`/opt/funnel/bin/funnel ping`
+    if [[ $F != 'pong' ]]; then
+        echo $F
+        echo "FAILED"
+    else
+        echo "SUCCESS"
+    fi
 fi
 
-echo -e "\nStarting SOAP Srv..."
-/opt/soap_srv/bin/soap_srv start
-sleep 10
-S=`/opt/soap_srv/bin/soap_srv ping`
-if [[ $S != 'pong' ]]; then
-    echo $S
-    echo "FAILED"
-else
-    echo "SUCCESS"
+if [[ -x /opt/soap_srv/bin/soap_srv ]]; then
+    echo -e "\nStarting SOAP Srv..."
+    /opt/soap_srv/bin/soap_srv start
+    sleep 10
+    S=`/opt/soap_srv/bin/soap_srv ping`
+    if [[ $S != 'pong' ]]; then
+        echo $S
+        echo "FAILED"
+    else
+        echo "SUCCESS"
+    fi
 fi
 
-echo -e "\nStarting OneAPI Srv..."
-/opt/oneapi_srv/bin/oneapi_srv start
-sleep 10
-O=`/opt/oneapi_srv/bin/oneapi_srv ping`
-if [[ $O != 'pong' ]]; then
-    echo $O
-    echo "FAILED"
-else
-    echo "SUCCESS"
+if [[ -x /opt/oneapi_srv/bin/oneapi_srv ]]; then
+    echo -e "\nStarting OneAPI Srv..."
+    /opt/oneapi_srv/bin/oneapi_srv start
+    sleep 10
+    O=`/opt/oneapi_srv/bin/oneapi_srv ping`
+    if [[ $O != 'pong' ]]; then
+        echo $O
+        echo "FAILED"
+    else
+        echo "SUCCESS"
+    fi
 fi
 
 if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
@@ -103,24 +109,28 @@ if [[ -x /opt/mm_srv/bin/mm_srv ]]; then
     fi
 fi
 
-echo -e "\nStarting Kelly..."
-/opt/kelly/bin/kelly start
-sleep 10
-K=`/opt/kelly/bin/kelly ping`
-if [[ $K != 'pong' ]]; then
-    echo $K
-    echo "FAILED"
-else
-    echo "SUCCESS"
+if [[ -x /opt/kelly/bin/kelly ]]; then
+    echo -e "\nStarting Kelly..."
+    /opt/kelly/bin/kelly start
+    sleep 10
+    K=`/opt/kelly/bin/kelly ping`
+    if [[ $K != 'pong' ]]; then
+        echo $K
+        echo "FAILED"
+    else
+        echo "SUCCESS"
+    fi
 fi
 
-echo -e "\nStarting Just..."
-/opt/just/bin/just start
-sleep 20
-J=`/opt/just/bin/just ping`
-if [[ $J != 'pong' ]]; then
-    echo $J
-    echo "FAILED"
-else
-    echo "SUCCESS"
+if [[ -x /opt/just/bin/just ]]; then
+    echo -e "\nStarting Just..."
+    /opt/just/bin/just start
+    sleep 20
+    J=`/opt/just/bin/just ping`
+    if [[ $J != 'pong' ]]; then
+        echo $J
+        echo "FAILED"
+    else
+        echo "SUCCESS"
+    fi
 fi
