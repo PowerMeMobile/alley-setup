@@ -1,6 +1,6 @@
 screen -t "htop" bash -c "echo htop; echo; exec bash"
 
-screen -t "rabbitmq" bash -c "echo rabbitmq-server -detached; echo rabbitmqctl status \| stop; echo -e 'watch -n1 \x27rabbitmqctl list_queues name messages messages_ready messages_unacknowledged -q | column -t | sort\x27'; echo; exec bash"
+screen -t "rabbitmq" bash -c "echo rabbitmq-server -detached; echo rabbitmqctl status \| stop; echo -e 'watch -n1 \x27rabbitmqctl list_queues name messages messages_ready messages_unacknowledged consumers -q | column -t | sort\x27'; echo; exec bash"
 
 screen -t "mongodb" bash -c "echo ulimit -n 64000 -u 32000; echo mongod --port 27017 --dbpath /mnt/db/data/ --logpath /var/log/mongodb/mongodb.log --logappend --fork; echo mongo; echo; exec bash"
 
