@@ -1,6 +1,6 @@
 var mailbox_tables = [
     "db.funnel_receipts",
-    "db.incoming_sms",
+    "db.incomings",
     "db.subscriptions",
     "db.oneapi_receipt_subs",
     "db.oneapi_receipts"
