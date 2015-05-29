@@ -1,0 +1,47 @@
+#!/bin/bash
+
+SCRIPT_NAME=$(basename ${BASH_SOURCE[0]})
+SCRIPT_DIR=$(dirname ${BASH_SOURCE[0]})
+
+echo "#"
+echo "# $SCRIPT_NAME"
+echo "#"
+
+grep -q $SCRIPT_NAME $SCRIPT_DIR/../log/setup.log
+if [[ $? -eq 1 ]]; then
+    source $SCRIPT_DIR/../conf/setup.conf
+
+    cp $SCRIPT_DIR/../run/start-mongo-rs /opt/bin/start-mongo-rs
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to copy start-mongo-rs to /opt/bin"
+        exit 1
+    fi
+
+    chmod +x /opt/bin/start-mongo-rs
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to chmod +x start-mongo-rs"
+        exit 1
+    fi
+
+    if [[ -f /etc/rc.local ]]; then
+        cat >> /etc/rc.local << EOF
+su $ALLEY_USER -l -c 'bash -c "/opt/bin/start-mongo-rs &>> /var/log/mongodb/start-mongo-rs.log"'
+EOF
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to add start rules to rc.local"
+            exit 1
+        fi
+        cat << EOF
+WARNING!
+Please review /etc/rc.local for inconsistencies
+EOF
+    else
+        echo "Not /etc/rc.local"
+        exit 1
+    fi
+
+    echo $SCRIPT_NAME >> $SCRIPT_DIR/../log/setup.log
+    echo "DONE"
+else
+    echo "SKIPPED"
+fi
